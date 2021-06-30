@@ -17,7 +17,7 @@ jobs:
   test:
     needs: build
 
-    if: ${{ github.repository_owner == 'dennisameling' }}
+    if: ${{ github.repository_owner == 'dennisameling' && github.actor != 'dependabot[bot]' }}
 
     runs-on: ${{ matrix.os }}
 
