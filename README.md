@@ -4,12 +4,14 @@
 
 # Simple FTP upload
 
-With this Action, you can upload folder contents to an FTP server.
+With this Action, you can upload folder contents to an FTP server. **Overwrites existing files on the server!**
+
+This Action uploads files straight to the FTP server, without keeping a sync state. If you need a sync state, consider using [SamKirkland/FTP-Deploy-Action](https://github.com/marketplace/actions/ftp-deploy) instead.
 
 ## Basic usage
 
 ```YAML
-  uses: dennisameling/ftp-upload-action
+  uses: dennisameling/ftp-upload-action@v1
   with:
     server: ${{ secrets.FTP_SERVER }}
     username: ${{ secrets.FTP_USER }}
