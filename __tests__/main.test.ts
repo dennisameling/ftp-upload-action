@@ -29,4 +29,3 @@ test('returns folder contents recursively', async () => {
     expect(fileArray).toContain(`${fileObject.folder}/${fileObject.filename}`)
   }
 })
-
