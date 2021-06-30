@@ -36,6 +36,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local_dir: dummydata/testFolderRecursive/
           server_dir: ${{ matrix.os }}-test/
+          protocol: ftps
       - name: test with testFolder
         uses: ./
         with:
