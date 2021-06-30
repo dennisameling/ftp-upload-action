@@ -1,28 +1,32 @@
-import {wait} from '../src/wait'
-import * as process from 'process'
-import * as cp from 'child_process'
 import * as path from 'path'
+import {File, getFiles} from '../src/util'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
-})
+test('returns folder contents', async () => {
+  const fileArray = ['test1.txt', 'test2.txt']
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
-})
-
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
+  for await (const fileObject of getFiles(
+    path.join(__dirname, '..', 'dummydata', 'testFolder'),
+    path.resolve(__dirname, '..', 'dummydata', 'testFolder')
+    // eslint-disable-next-line no-undef
+  ) as AsyncIterable<File>) {
+    expect(fileArray).toContain(fileObject.filename)
   }
-  console.log(cp.execFileSync(np, [ip], options).toString())
 })
+
+test('returns folder contents recursively', async () => {
+  const fileArray = [
+    '/test.txt',
+    'sub1/test.txt',
+    'sub1/subsub1/test.txt',
+    'sub2/test.txt'
+  ]
+
+  for await (const fileObject of getFiles(
+    path.join(__dirname, '..', 'dummydata', 'testFolderRecursive'),
+    path.resolve(__dirname, '..', 'dummydata', 'testFolderRecursive')
+    // eslint-disable-next-line no-undef
+  ) as AsyncIterable<File>) {
+    expect(fileArray).toContain(`${fileObject.folder}/${fileObject.filename}`)
+  }
+})
+

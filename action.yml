@@ -1,11 +1,28 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Simple FTP upload'
+description: 'Allows you to upload contents of a directory to an FTP server over FTP or FTPS'
+author: 'Dennis Ameling'
 inputs:
-  milliseconds: # change this
+  server:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: "FTP server"
+  username:
+    required: true
+    description: "FTP username"
+  password:
+    required: true
+    description: "FTP password"
+  port:
+    required: false
+    description: "Server port to connect to (read your web hosts docs). Defaults to 21."
+  secure:
+    required: false
+    description: "True uses FTPS, while false uses plain FTP. Defaults to true."
+  local_dir:
+    required: false
+    description: "Folder to upload from, must end with trailing slash /"
+  server_dir:
+    required: false
+    description: "Path to upload to on the server. Must end with trailing slash /"
 runs:
   using: 'node12'
   main: 'dist/index.js'
