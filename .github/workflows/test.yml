@@ -15,6 +15,8 @@ jobs:
       - run: npm run all
 
   test:
+    needs: build
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -27,7 +29,7 @@ jobs:
         uses: ./
         with:
           server: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USER }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local_dir: dummydata/testFolder/
           server_dir: ${{ matrix.os }}
@@ -35,7 +37,7 @@ jobs:
         uses: ./
         with:
           server: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USER }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local_dir: dummydata/testFolderRecursive/
           server_dir: ${{ matrix.os }}
