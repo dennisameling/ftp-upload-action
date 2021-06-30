@@ -75,6 +75,9 @@ function run() {
             }
             try {
                 core.info('Connecting to server...');
+                if (core.isDebug()) {
+                    client.ftp.verbose = true;
+                }
                 yield client.access({
                     host: server,
                     user: username,
