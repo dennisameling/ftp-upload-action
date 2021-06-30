@@ -36,6 +36,8 @@ async function run(): Promise<void> {
     try {
       core.info('Connecting to server...')
 
+      client.ftp.verbose = true
+
       if (core.isDebug()) {
         client.ftp.verbose = true
       }
@@ -45,7 +47,11 @@ async function run(): Promise<void> {
         user: username,
         password,
         secure,
-        port
+        port,
+        secureOptions: {
+          minVersion: 'TLSv1.1',
+          maxVersion: 'TLSv1.2' // TLS 1.3 was causing issues so we set the maxVersion to 1.3
+        }
       })
 
       core.info(
