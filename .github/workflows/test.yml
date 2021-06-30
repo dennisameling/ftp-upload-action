@@ -17,7 +17,7 @@ jobs:
   test:
     needs: build
 
-    if: ${{ secrets.FTP_SERVER != '' }}
+    if: ${{ github.repository_owner == 'dennisameling' }}
 
     runs-on: ${{ matrix.os }}
 
