@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local_dir: dummydata/testFolder/
-          server_dir: ${{ matrix.os }}
+          server_dir: ${{ matrix.os }}/
       - name: test with testFolderRecursive
         uses: ./
         with:
@@ -40,4 +40,4 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local_dir: dummydata/testFolderRecursive/
-          server_dir: ${{ matrix.os }}
+          server_dir: ${{ matrix.os }}/
