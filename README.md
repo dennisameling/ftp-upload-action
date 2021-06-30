@@ -8,6 +8,11 @@ With this Action, you can upload folder contents to an FTP server. **Overwrites 
 
 This Action uploads files straight to the FTP server, without keeping a sync state. If you need a sync state, consider using [SamKirkland/FTP-Deploy-Action](https://github.com/marketplace/actions/ftp-deploy) instead.
 
+Tested and works on:
+- `ubuntu-latest`
+- `windows-latest`
+- `macos-latest`
+
 ## Basic usage
 
 ```YAML
