@@ -17,6 +17,8 @@ jobs:
   test:
     needs: build
 
+    if: ${{ secrets.FTP_SERVER != '' }}
+
     runs-on: ${{ matrix.os }}
 
     strategy:
