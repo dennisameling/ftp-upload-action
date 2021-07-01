@@ -28,15 +28,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local_dir: dummydata/testFolderRecursive/
-          server_dir: ${{ matrix.os }}-test/
-          protocol: ftps
       - name: test with testFolder
         uses: ./
         with:
