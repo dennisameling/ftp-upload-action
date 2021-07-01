@@ -36,6 +36,10 @@ async function run(): Promise<void> {
     try {
       core.info('Connecting to server...')
 
+      if (core.isDebug()) {
+        client.ftp.verbose = true
+      }
+
       await client.access({
         host: server,
         user: username,
