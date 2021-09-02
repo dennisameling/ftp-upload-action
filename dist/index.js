@@ -1,10 +1,9 @@
-require('./sourcemap-register.js');module.exports =
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 109:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -43,94 +42,89 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__webpack_require__(186));
-const ftp = __importStar(__webpack_require__(957));
-const path = __importStar(__webpack_require__(622));
-const util_1 = __webpack_require__(24);
+const core = __importStar(__nccwpck_require__(186));
+const ftp = __importStar(__nccwpck_require__(957));
+const path = __importStar(__nccwpck_require__(622));
+const util_1 = __nccwpck_require__(24);
 function run() {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function* () {
+        const server = core.getInput('server', { required: true });
+        const username = core.getInput('username', { required: true });
+        const password = core.getInput('password', { required: true });
+        let port = Number(core.getInput('port'));
+        const secureInput = core.getInput('secure');
+        let localDir = core.getInput('local_dir');
+        let serverDir = core.getInput('server_dir');
+        const timeoutMs = 30000;
+        let secure = true;
+        const client = new ftp.Client(timeoutMs);
+        if (!port) {
+            port = 21;
+        }
+        if (secureInput === 'false') {
+            secure = false;
+        }
+        if (localDir.length === 0) {
+            localDir = './';
+        }
+        if (serverDir.length === 0) {
+            serverDir = './';
+        }
         try {
-            const server = core.getInput('server', { required: true });
-            const username = core.getInput('username', { required: true });
-            const password = core.getInput('password', { required: true });
-            let port = Number(core.getInput('port'));
-            const secureInput = core.getInput('secure');
-            let localDir = core.getInput('local_dir');
-            let serverDir = core.getInput('server_dir');
-            const timeoutMs = 30000;
-            let secure = true;
-            const client = new ftp.Client(timeoutMs);
-            if (!port) {
-                port = 21;
+            core.info('Connecting to server...');
+            if (core.isDebug()) {
+                client.ftp.verbose = true;
             }
-            if (secureInput === 'false') {
-                secure = false;
-            }
-            if (localDir.length === 0) {
-                localDir = './';
-            }
-            if (serverDir.length === 0) {
-                serverDir = './';
-            }
+            yield client.access({
+                host: server,
+                user: username,
+                password,
+                secure,
+                port
+            });
+            core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
+        }
+        catch (err) {
+            core.setFailed(`Error while connecting to the server: ${err}`);
+            return;
+        }
+        try {
+            const absRoot = path.resolve(localDir);
+            core.debug(`Using this root directory: ${absRoot}`);
             try {
-                core.info('Connecting to server...');
-                if (core.isDebug()) {
-                    client.ftp.verbose = true;
-                }
-                yield client.access({
-                    host: server,
-                    user: username,
-                    password,
-                    secure,
-                    port
-                });
-                core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
-            }
-            catch (err) {
-                core.setFailed(`Error while connecting to the server: ${err}`);
-                return;
-            }
-            try {
-                const absRoot = path.resolve(localDir);
-                core.debug(`Using this root directory: ${absRoot}`);
-                try {
-                    for (var _b = __asyncValues(util_1.getFiles(localDir, absRoot
-                    // eslint-disable-next-line no-undef
-                    )), _c; _c = yield _b.next(), !_c.done;) {
-                        const fileObject = _c.value;
-                        const localCurrentDir = fileObject.folder.replace(localDir, '');
-                        core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
-                        const serverFolder = `${serverDir}${localCurrentDir}`;
-                        core.debug(JSON.stringify(fileObject));
-                        yield client.ensureDir(serverFolder);
-                        yield client.uploadFrom(fileObject.fullPath, fileObject.filename);
-                        // Go back to the original folder
-                        if (fileObject.dirLevel > 0) {
-                            for (let i = 0; i < fileObject.dirLevel; i++) {
-                                core.debug('Going one folder up...');
-                                yield client.cdup();
-                            }
+                for (var _b = __asyncValues((0, util_1.getFiles)(localDir, absRoot
+                // eslint-disable-next-line no-undef
+                )), _c; _c = yield _b.next(), !_c.done;) {
+                    const fileObject = _c.value;
+                    const localCurrentDir = fileObject.folder.replace(localDir, '');
+                    core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
+                    const serverFolder = `${serverDir}${localCurrentDir}`;
+                    core.debug(JSON.stringify(fileObject));
+                    yield client.ensureDir(serverFolder);
+                    yield client.uploadFrom(fileObject.fullPath, fileObject.filename);
+                    // Go back to the original folder
+                    if (fileObject.dirLevel > 0) {
+                        for (let i = 0; i < fileObject.dirLevel; i++) {
+                            core.debug('Going one folder up...');
+                            yield client.cdup();
                         }
                     }
                 }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                finally {
-                    try {
-                        if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
-                    }
-                    finally { if (e_1) throw e_1.error; }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
                 }
-                core.info('All done!');
+                finally { if (e_1) throw e_1.error; }
             }
-            catch (err) {
-                core.setFailed(`Error while transferring one or more files: ${err}`);
-            }
-            client.close();
+            core.info('All done!');
         }
-        catch (error) {
-            core.setFailed(error.message);
+        catch (err) {
+            core.setFailed(`Error while transferring one or more files: ${err}`);
         }
+        client.close();
     });
 }
 run();
@@ -139,28 +133,9 @@ run();
 /***/ }),
 
 /***/ 24:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __asyncValues = (this && this.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
@@ -187,8 +162,8 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFiles = void 0;
-const fs_1 = __webpack_require__(747);
-const path_1 = __importStar(__webpack_require__(622));
+const path_1 = __nccwpck_require__(622);
+const fs_1 = __nccwpck_require__(747);
 /**
  * Gets files in the given directory.
  *
@@ -200,15 +175,15 @@ function getFiles(dir, absRoot, dirLevel = 0
 // eslint-disable-next-line no-undef
 ) {
     return __asyncGenerator(this, arguments, function* getFiles_1() {
-        const dirents = fs_1.readdirSync(dir, { withFileTypes: true });
+        const dirents = (0, fs_1.readdirSync)(dir, { withFileTypes: true });
         for (const dirent of dirents) {
-            const res = path_1.resolve(dir, dirent.name);
+            const res = (0, path_1.resolve)(dir, dirent.name);
             if (dirent.isDirectory()) {
                 yield __await(yield* __asyncDelegator(__asyncValues(getFiles(res, absRoot, dirLevel + 1))));
             }
             else {
                 yield yield __await({
-                    folder: path_1.default.relative(absRoot, dir),
+                    folder: (0, path_1.relative)(absRoot, dir),
                     filename: dirent.name,
                     fullPath: res,
                     dirLevel
@@ -223,7 +198,7 @@ exports.getFiles = getFiles;
 /***/ }),
 
 /***/ 351:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -247,8 +222,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issue = exports.issueCommand = void 0;
-const os = __importStar(__webpack_require__(87));
-const utils_1 = __webpack_require__(278);
+const os = __importStar(__nccwpck_require__(87));
+const utils_1 = __nccwpck_require__(278);
 /**
  * Commands
  *
@@ -321,7 +296,7 @@ function escapeProperty(s) {
 /***/ }),
 
 /***/ 186:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -353,12 +328,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
-const command_1 = __webpack_require__(351);
-const file_command_1 = __webpack_require__(717);
-const utils_1 = __webpack_require__(278);
-const os = __importStar(__webpack_require__(87));
-const path = __importStar(__webpack_require__(622));
+exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+const command_1 = __nccwpck_require__(351);
+const file_command_1 = __nccwpck_require__(717);
+const utils_1 = __nccwpck_require__(278);
+const os = __importStar(__nccwpck_require__(87));
+const path = __importStar(__nccwpck_require__(622));
 /**
  * The code to exit an action
  */
@@ -531,19 +506,30 @@ exports.debug = debug;
 /**
  * Adds an error issue
  * @param message error issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function error(message) {
-    command_1.issue('error', message instanceof Error ? message.toString() : message);
+function error(message, properties = {}) {
+    command_1.issueCommand('error', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
- * Adds an warning issue
+ * Adds a warning issue
  * @param message warning issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function warning(message) {
-    command_1.issue('warning', message instanceof Error ? message.toString() : message);
+function warning(message, properties = {}) {
+    command_1.issueCommand('warning', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
+/**
+ * Adds a notice issue
+ * @param message notice issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
+ */
+function notice(message, properties = {}) {
+    command_1.issueCommand('notice', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
+}
+exports.notice = notice;
 /**
  * Writes info to log with console.log.
  * @param message info message
@@ -621,7 +607,7 @@ exports.getState = getState;
 /***/ }),
 
 /***/ 717:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 // For internal use, subject to change.
@@ -648,9 +634,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issueCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(__webpack_require__(747));
-const os = __importStar(__webpack_require__(87));
-const utils_1 = __webpack_require__(278);
+const fs = __importStar(__nccwpck_require__(747));
+const os = __importStar(__nccwpck_require__(87));
+const utils_1 = __nccwpck_require__(278);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -675,7 +661,7 @@ exports.issueCommand = issueCommand;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toCommandValue = void 0;
+exports.toCommandProperties = exports.toCommandValue = void 0;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -690,28 +676,47 @@ function toCommandValue(input) {
     return JSON.stringify(input);
 }
 exports.toCommandValue = toCommandValue;
+/**
+ *
+ * @param annotationProperties
+ * @returns The command properties to send with the actual annotation command
+ * See IssueCommandProperties: https://github.com/actions/runner/blob/main/src/Runner.Worker/ActionCommandManager.cs#L646
+ */
+function toCommandProperties(annotationProperties) {
+    if (!Object.keys(annotationProperties).length) {
+        return {};
+    }
+    return {
+        title: annotationProperties.title,
+        line: annotationProperties.startLine,
+        endLine: annotationProperties.endLine,
+        col: annotationProperties.startColumn,
+        endColumn: annotationProperties.endColumn
+    };
+}
+exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
 
 /***/ 337:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Client = void 0;
-const fs_1 = __webpack_require__(747);
-const path_1 = __webpack_require__(622);
-const tls_1 = __webpack_require__(16);
-const util_1 = __webpack_require__(669);
-const FtpContext_1 = __webpack_require__(52);
-const parseList_1 = __webpack_require__(993);
-const ProgressTracker_1 = __webpack_require__(170);
-const StringWriter_1 = __webpack_require__(184);
-const parseListMLSD_1 = __webpack_require__(157);
-const netUtils_1 = __webpack_require__(288);
-const transfer_1 = __webpack_require__(803);
-const parseControlResponse_1 = __webpack_require__(948);
+const fs_1 = __nccwpck_require__(747);
+const path_1 = __nccwpck_require__(622);
+const tls_1 = __nccwpck_require__(16);
+const util_1 = __nccwpck_require__(669);
+const FtpContext_1 = __nccwpck_require__(52);
+const parseList_1 = __nccwpck_require__(993);
+const ProgressTracker_1 = __nccwpck_require__(170);
+const StringWriter_1 = __nccwpck_require__(184);
+const parseListMLSD_1 = __nccwpck_require__(157);
+const netUtils_1 = __nccwpck_require__(288);
+const transfer_1 = __nccwpck_require__(803);
+const parseControlResponse_1 = __nccwpck_require__(948);
 // Use promisify to keep the library compatible with Node 8.
 const fsReadDir = util_1.promisify(fs_1.readdir);
 const fsMkDir = util_1.promisify(fs_1.mkdir);
@@ -1563,13 +1568,13 @@ FileInfo.UnixPermission = {
 /***/ }),
 
 /***/ 52:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FTPContext = exports.FTPError = void 0;
-const net_1 = __webpack_require__(631);
-const parseControlResponse_1 = __webpack_require__(948);
+const net_1 = __nccwpck_require__(631);
+const parseControlResponse_1 = __nccwpck_require__(948);
 /**
  * Describes an FTP server error response including the FTP response code.
  */
@@ -2009,12 +2014,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /***/ }),
 
 /***/ 184:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StringWriter = void 0;
-const stream_1 = __webpack_require__(413);
+const stream_1 = __nccwpck_require__(413);
 class StringWriter extends stream_1.Writable {
     constructor() {
         super(...arguments);
@@ -2039,7 +2044,7 @@ exports.StringWriter = StringWriter;
 /***/ }),
 
 /***/ 957:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -2057,12 +2062,12 @@ exports.enterPassiveModeIPv6 = exports.enterPassiveModeIPv4 = void 0;
 /**
  * Public API
  */
-__exportStar(__webpack_require__(337), exports);
-__exportStar(__webpack_require__(52), exports);
-__exportStar(__webpack_require__(202), exports);
-__exportStar(__webpack_require__(993), exports);
-__exportStar(__webpack_require__(677), exports);
-var transfer_1 = __webpack_require__(803);
+__exportStar(__nccwpck_require__(337), exports);
+__exportStar(__nccwpck_require__(52), exports);
+__exportStar(__nccwpck_require__(202), exports);
+__exportStar(__nccwpck_require__(993), exports);
+__exportStar(__nccwpck_require__(677), exports);
+var transfer_1 = __nccwpck_require__(803);
 Object.defineProperty(exports, "enterPassiveModeIPv4", ({ enumerable: true, get: function () { return transfer_1.enterPassiveModeIPv4; } }));
 Object.defineProperty(exports, "enterPassiveModeIPv6", ({ enumerable: true, get: function () { return transfer_1.enterPassiveModeIPv6; } }));
 
@@ -2070,12 +2075,12 @@ Object.defineProperty(exports, "enterPassiveModeIPv6", ({ enumerable: true, get:
 /***/ }),
 
 /***/ 288:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ipIsPrivateV4Address = exports.upgradeSocket = exports.describeAddress = exports.describeTLS = void 0;
-const tls_1 = __webpack_require__(16);
+const tls_1 = __nccwpck_require__(16);
 /**
  * Returns a string describing the encryption on a given socket instance.
  */
@@ -2217,7 +2222,7 @@ function isNotBlank(str) {
 /***/ }),
 
 /***/ 993:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -2241,9 +2246,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseList = void 0;
-const dosParser = __importStar(__webpack_require__(199));
-const unixParser = __importStar(__webpack_require__(375));
-const mlsdParser = __importStar(__webpack_require__(157));
+const dosParser = __importStar(__nccwpck_require__(199));
+const unixParser = __importStar(__nccwpck_require__(375));
+const mlsdParser = __importStar(__nccwpck_require__(157));
 /**
  * Available directory listing parsers. These are candidates that will be tested
  * in the order presented. The first candidate will be used to parse the whole list.
@@ -2286,12 +2291,12 @@ exports.parseList = parseList;
 /***/ }),
 
 /***/ 199:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.transformList = exports.parseLine = exports.testLine = void 0;
-const FileInfo_1 = __webpack_require__(202);
+const FileInfo_1 = __nccwpck_require__(202);
 /**
  * This parser is based on the FTP client library source code in Apache Commons Net provided
  * under the Apache 2.0 license. It has been simplified and rewritten to better fit the Javascript language.
@@ -2346,12 +2351,12 @@ exports.transformList = transformList;
 /***/ }),
 
 /***/ 157:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseMLSxDate = exports.transformList = exports.parseLine = exports.testLine = void 0;
-const FileInfo_1 = __webpack_require__(202);
+const FileInfo_1 = __nccwpck_require__(202);
 function parseSize(value, info) {
     info.size = parseInt(value, 10);
 }
@@ -2541,12 +2546,12 @@ exports.parseMLSxDate = parseMLSxDate;
 /***/ }),
 
 /***/ 375:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.transformList = exports.parseLine = exports.testLine = void 0;
-const FileInfo_1 = __webpack_require__(202);
+const FileInfo_1 = __nccwpck_require__(202);
 const JA_MONTH = "\u6708";
 const JA_DAY = "\u65e5";
 const JA_YEAR = "\u5e74";
@@ -2704,14 +2709,14 @@ function parseMode(r, w, x) {
 /***/ }),
 
 /***/ 803:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.downloadTo = exports.uploadFrom = exports.connectForPassiveTransfer = exports.parsePasvResponse = exports.enterPassiveModeIPv4 = exports.parseEpsvResponse = exports.enterPassiveModeIPv6 = void 0;
-const netUtils_1 = __webpack_require__(288);
-const tls_1 = __webpack_require__(16);
-const parseControlResponse_1 = __webpack_require__(948);
+const netUtils_1 = __nccwpck_require__(288);
+const tls_1 = __nccwpck_require__(16);
+const parseControlResponse_1 = __nccwpck_require__(948);
 /**
  * Prepare a data socket using passive mode over IPv6.
  */
@@ -3061,10 +3066,11 @@ module.exports = require("util");;
 /******/ 	var __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -3076,7 +3082,7 @@ module.exports = require("util");;
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
-/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
 /******/ 			threw = false;
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
@@ -3089,11 +3095,14 @@ module.exports = require("util");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__webpack_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(109);
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

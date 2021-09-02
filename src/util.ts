@@ -1,5 +1,5 @@
+import {relative, resolve} from 'path'
 import {readdirSync} from 'fs'
-import path, {resolve} from 'path'
 
 export interface File {
   folder: string
@@ -28,7 +28,7 @@ export async function* getFiles(
       yield* getFiles(res, absRoot, dirLevel + 1)
     } else {
       yield {
-        folder: path.relative(absRoot, dir),
+        folder: relative(absRoot, dir),
         filename: dirent.name,
         fullPath: res,
         dirLevel
