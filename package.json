@@ -29,7 +29,7 @@
     "basic-ftp": "^4.6.6"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.7.10",
     "@typescript-eslint/parser": "^4.8.1",
     "@vercel/ncc": "^0.30.0",
