@@ -137,7 +137,7 @@ function run() {
  *
  * @example retryRequest(async () => await item());
  */
-function retryRequest(callback) {
+function retryRequest(callback, isFinalAttempt = false) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             return yield callback();
@@ -153,7 +153,11 @@ function retryRequest(callback) {
                 }
                 // Wait for 5 seconds before retrying
                 yield new Promise(resolve => setTimeout(resolve, 5000));
-                return yield callback();
+                // Super ugly means of retrying twice
+                if (isFinalAttempt) {
+                    return yield callback();
+                }
+                return yield retryRequest(callback, true);
             }
             else {
                 throw e;

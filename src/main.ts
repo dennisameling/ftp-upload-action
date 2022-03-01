@@ -100,7 +100,10 @@ async function run(): Promise<void> {
  *
  * @example retryRequest(async () => await item());
  */
-async function retryRequest<T>(callback: () => Promise<T>): Promise<T> {
+async function retryRequest<T>(
+  callback: () => Promise<T>,
+  isFinalAttempt = false
+): Promise<T> {
   try {
     return await callback()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -121,7 +124,12 @@ async function retryRequest<T>(callback: () => Promise<T>): Promise<T> {
       // Wait for 5 seconds before retrying
       await new Promise(resolve => setTimeout(resolve, 5000))
 
-      return await callback()
+      // Super ugly means of retrying twice
+      if (isFinalAttempt) {
+        return await callback()
+      }
+
+      return await retryRequest(callback, true)
     } else {
       throw e
     }
