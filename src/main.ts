@@ -44,7 +44,10 @@ async function run(): Promise<void> {
       user: username,
       password,
       secure,
-      port
+      port,
+      secureOptions: {
+        maxVersion: 'TLSv1.2'
+      }
     })
 
     core.info(
@@ -88,6 +91,7 @@ async function run(): Promise<void> {
     core.setFailed(`Error while transferring one or more files: ${err}`)
   }
 
+  core.info('Closing connection...')
   client.close()
 }
 

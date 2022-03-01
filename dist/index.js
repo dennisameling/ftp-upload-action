@@ -85,7 +85,10 @@ function run() {
                 user: username,
                 password,
                 secure,
-                port
+                port,
+                secureOptions: {
+                    maxVersion: 'TLSv1.2'
+                }
             });
             core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
         }
@@ -128,6 +131,7 @@ function run() {
         catch (err) {
             core.setFailed(`Error while transferring one or more files: ${err}`);
         }
+        core.info('Closing connection...');
         client.close();
     });
 }
