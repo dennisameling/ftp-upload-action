@@ -109,7 +109,7 @@ function run() {
                     const serverFolder = `${serverDir}${localCurrentDir}`;
                     core.debug(JSON.stringify(fileObject));
                     yield client.ensureDir(serverFolder);
-                    yield client.uploadFrom(fileObject.fullPath, fileObject.filename);
+                    yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
                     // Go back to the original folder
                     if (fileObject.dirLevel > 0) {
                         for (let i = 0; i < fileObject.dirLevel; i++) {
@@ -133,6 +133,33 @@ function run() {
         }
         core.info('Closing connection...');
         client.close();
+    });
+}
+/**
+ * retry a request
+ *
+ * @example retryRequest(async () => await item());
+ */
+function retryRequest(callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return yield callback();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }
+        catch (e) {
+            if (e.code >= 400 && e.code <= 499) {
+                core.info('400 level error from server when performing action - retrying...');
+                core.info(e);
+                if (e.code === 426) {
+                    core.info('Connection closed. This library does not currently handle reconnects');
+                    throw e;
+                }
+                return yield callback();
+            }
+            else {
+                throw e;
+            }
+        }
     });
 }
 run();

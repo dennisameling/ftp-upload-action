@@ -75,7 +75,10 @@ async function run(): Promise<void> {
       core.debug(JSON.stringify(fileObject))
 
       await client.ensureDir(serverFolder)
-      await client.uploadFrom(fileObject.fullPath, fileObject.filename)
+      await retryRequest(
+        async () =>
+          await client.uploadFrom(fileObject.fullPath, fileObject.filename)
+      )
 
       // Go back to the original folder
       if (fileObject.dirLevel > 0) {
@@ -93,6 +96,36 @@ async function run(): Promise<void> {
 
   core.info('Closing connection...')
   client.close()
+}
+
+/**
+ * retry a request
+ *
+ * @example retryRequest(async () => await item());
+ */
+async function retryRequest<T>(callback: () => Promise<T>): Promise<T> {
+  try {
+    return await callback()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    if (e.code >= 400 && e.code <= 499) {
+      core.info(
+        '400 level error from server when performing action - retrying...'
+      )
+      core.info(e)
+
+      if (e.code === 426) {
+        core.info(
+          'Connection closed. This library does not currently handle reconnects'
+        )
+        throw e
+      }
+
+      return await callback()
+    } else {
+      throw e
+    }
+  }
 }
 
 run()
