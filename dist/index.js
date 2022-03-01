@@ -85,10 +85,7 @@ function run() {
                 user: username,
                 password,
                 secure,
-                port,
-                secureOptions: {
-                    maxVersion: 'TLSv1.2'
-                }
+                port
             });
             core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
         }
@@ -154,6 +151,8 @@ function retryRequest(callback) {
                     core.info('Connection closed. This library does not currently handle reconnects');
                     throw e;
                 }
+                // Wait for 5 seconds before retrying
+                yield new Promise(resolve => setTimeout(resolve, 5000));
                 return yield callback();
             }
             else {

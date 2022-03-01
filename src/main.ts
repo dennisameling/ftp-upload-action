@@ -44,10 +44,7 @@ async function run(): Promise<void> {
       user: username,
       password,
       secure,
-      port,
-      secureOptions: {
-        maxVersion: 'TLSv1.2'
-      }
+      port
     })
 
     core.info(
@@ -120,6 +117,9 @@ async function retryRequest<T>(callback: () => Promise<T>): Promise<T> {
         )
         throw e
       }
+
+      // Wait for 5 seconds before retrying
+      await new Promise(resolve => setTimeout(resolve, 5000))
 
       return await callback()
     } else {
