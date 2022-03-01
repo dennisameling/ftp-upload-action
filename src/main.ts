@@ -72,7 +72,10 @@ async function run(): Promise<void> {
       core.debug(JSON.stringify(fileObject))
 
       await client.ensureDir(serverFolder)
-      await client.uploadFrom(fileObject.fullPath, fileObject.filename)
+      await retryRequest(
+        async () =>
+          await client.uploadFrom(fileObject.fullPath, fileObject.filename)
+      )
 
       // Go back to the original folder
       if (fileObject.dirLevel > 0) {
@@ -88,7 +91,49 @@ async function run(): Promise<void> {
     core.setFailed(`Error while transferring one or more files: ${err}`)
   }
 
+  core.info('Closing connection...')
   client.close()
+}
+
+/**
+ * retry a request
+ *
+ * @example retryRequest(async () => await item());
+ */
+async function retryRequest<T>(
+  callback: () => Promise<T>,
+  isFinalAttempt = false
+): Promise<T> {
+  try {
+    return await callback()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    if (e.code >= 400 && e.code <= 499) {
+      core.info(
+        '400 level error from server when performing action - retrying...'
+      )
+      core.info(e)
+
+      if (e.code === 426) {
+        core.info(
+          'Connection closed. This library does not currently handle reconnects'
+        )
+        throw e
+      }
+
+      // Wait for 5 seconds before retrying
+      await new Promise(resolve => setTimeout(resolve, 5000))
+
+      // Super ugly means of retrying twice
+      if (isFinalAttempt) {
+        return await callback()
+      }
+
+      return await retryRequest(callback, true)
+    } else {
+      throw e
+    }
+  }
 }
 
 run()
