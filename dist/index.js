@@ -1,7 +1,7 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 109:
+/***/ 3109:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -46,12 +46,12 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(186));
-const ftp = __importStar(__nccwpck_require__(957));
-const path = __importStar(__nccwpck_require__(17));
-const util_1 = __nccwpck_require__(24);
+const core = __importStar(__nccwpck_require__(2186));
+const ftp = __importStar(__nccwpck_require__(7957));
+const path = __importStar(__nccwpck_require__(1017));
+const util_1 = __nccwpck_require__(4024);
 function run() {
-    var e_1, _a;
+    var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         const server = core.getInput('server', { required: true });
         const username = core.getInput('username', { required: true });
@@ -97,29 +97,36 @@ function run() {
             const absRoot = path.resolve(localDir);
             core.debug(`Using this root directory: ${absRoot}`);
             try {
-                for (var _b = __asyncValues((0, util_1.getFiles)(localDir, absRoot
+                for (var _d = true, _e = __asyncValues((0, util_1.getFiles)(localDir, absRoot
                 // eslint-disable-next-line no-undef
-                )), _c; _c = yield _b.next(), !_c.done;) {
-                    const fileObject = _c.value;
-                    const localCurrentDir = fileObject.folder.replace(localDir, '');
-                    core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
-                    const serverFolder = `${serverDir}${localCurrentDir}`;
-                    core.debug(JSON.stringify(fileObject));
-                    yield client.ensureDir(serverFolder);
-                    yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
-                    // Go back to the original folder
-                    if (fileObject.dirLevel > 0) {
-                        for (let i = 0; i < fileObject.dirLevel; i++) {
-                            core.debug('Going one folder up...');
-                            yield client.cdup();
+                )), _f; _f = yield _e.next(), _a = _f.done, !_a;) {
+                    _c = _f.value;
+                    _d = false;
+                    try {
+                        const fileObject = _c;
+                        const localCurrentDir = fileObject.folder.replace(localDir, '');
+                        core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
+                        const serverFolder = `${serverDir}${localCurrentDir}`;
+                        core.debug(JSON.stringify(fileObject));
+                        yield client.ensureDir(serverFolder);
+                        yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
+                        // Go back to the original folder
+                        if (fileObject.dirLevel > 0) {
+                            for (let i = 0; i < fileObject.dirLevel; i++) {
+                                core.debug('Going one folder up...');
+                                yield client.cdup();
+                            }
                         }
+                    }
+                    finally {
+                        _d = true;
                     }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
+                    if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
@@ -170,7 +177,7 @@ run();
 
 /***/ }),
 
-/***/ 24:
+/***/ 4024:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -201,8 +208,8 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFiles = void 0;
-const path_1 = __nccwpck_require__(17);
-const fs_1 = __nccwpck_require__(147);
+const path_1 = __nccwpck_require__(1017);
+const fs_1 = __nccwpck_require__(7147);
 /**
  * Gets files in the given directory.
  *
@@ -236,7 +243,7 @@ exports.getFiles = getFiles;
 
 /***/ }),
 
-/***/ 351:
+/***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -262,8 +269,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issue = exports.issueCommand = void 0;
-const os = __importStar(__nccwpck_require__(37));
-const utils_1 = __nccwpck_require__(278);
+const os = __importStar(__nccwpck_require__(2037));
+const utils_1 = __nccwpck_require__(5278);
 /**
  * Commands
  *
@@ -335,7 +342,7 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 2186:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -370,12 +377,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
-const command_1 = __nccwpck_require__(351);
+const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
-const utils_1 = __nccwpck_require__(278);
-const os = __importStar(__nccwpck_require__(37));
-const path = __importStar(__nccwpck_require__(17));
-const oidc_utils_1 = __nccwpck_require__(41);
+const utils_1 = __nccwpck_require__(5278);
+const os = __importStar(__nccwpck_require__(2037));
+const path = __importStar(__nccwpck_require__(1017));
+const oidc_utils_1 = __nccwpck_require__(8041);
 /**
  * The code to exit an action
  */
@@ -404,13 +411,9 @@ function exportVariable(name, val) {
     process.env[name] = convertedVal;
     const filePath = process.env['GITHUB_ENV'] || '';
     if (filePath) {
-        const delimiter = '_GitHubActionsFileCommandDelimeter_';
-        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        file_command_1.issueCommand('ENV', commandValue);
+        return file_command_1.issueFileCommand('ENV', file_command_1.prepareKeyValueMessage(name, val));
     }
-    else {
-        command_1.issueCommand('set-env', { name }, convertedVal);
-    }
+    command_1.issueCommand('set-env', { name }, convertedVal);
 }
 exports.exportVariable = exportVariable;
 /**
@@ -428,7 +431,7 @@ exports.setSecret = setSecret;
 function addPath(inputPath) {
     const filePath = process.env['GITHUB_PATH'] || '';
     if (filePath) {
-        file_command_1.issueCommand('PATH', inputPath);
+        file_command_1.issueFileCommand('PATH', inputPath);
     }
     else {
         command_1.issueCommand('add-path', {}, inputPath);
@@ -468,7 +471,10 @@ function getMultilineInput(name, options) {
     const inputs = getInput(name, options)
         .split('\n')
         .filter(x => x !== '');
-    return inputs;
+    if (options && options.trimWhitespace === false) {
+        return inputs;
+    }
+    return inputs.map(input => input.trim());
 }
 exports.getMultilineInput = getMultilineInput;
 /**
@@ -501,8 +507,12 @@ exports.getBooleanInput = getBooleanInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    const filePath = process.env['GITHUB_OUTPUT'] || '';
+    if (filePath) {
+        return file_command_1.issueFileCommand('OUTPUT', file_command_1.prepareKeyValueMessage(name, value));
+    }
     process.stdout.write(os.EOL);
-    command_1.issueCommand('set-output', { name }, value);
+    command_1.issueCommand('set-output', { name }, utils_1.toCommandValue(value));
 }
 exports.setOutput = setOutput;
 /**
@@ -631,7 +641,11 @@ exports.group = group;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function saveState(name, value) {
-    command_1.issueCommand('save-state', { name }, value);
+    const filePath = process.env['GITHUB_STATE'] || '';
+    if (filePath) {
+        return file_command_1.issueFileCommand('STATE', file_command_1.prepareKeyValueMessage(name, value));
+    }
+    command_1.issueCommand('save-state', { name }, utils_1.toCommandValue(value));
 }
 exports.saveState = saveState;
 /**
@@ -653,13 +667,20 @@ exports.getIDToken = getIDToken;
 /**
  * Summary exports
  */
-var summary_1 = __nccwpck_require__(327);
+var summary_1 = __nccwpck_require__(1327);
 Object.defineProperty(exports, "summary", ({ enumerable: true, get: function () { return summary_1.summary; } }));
 /**
  * @deprecated use core.summary
  */
-var summary_2 = __nccwpck_require__(327);
+var summary_2 = __nccwpck_require__(1327);
 Object.defineProperty(exports, "markdownSummary", ({ enumerable: true, get: function () { return summary_2.markdownSummary; } }));
+/**
+ * Path exports
+ */
+var path_utils_1 = __nccwpck_require__(2981);
+Object.defineProperty(exports, "toPosixPath", ({ enumerable: true, get: function () { return path_utils_1.toPosixPath; } }));
+Object.defineProperty(exports, "toWin32Path", ({ enumerable: true, get: function () { return path_utils_1.toWin32Path; } }));
+Object.defineProperty(exports, "toPlatformPath", ({ enumerable: true, get: function () { return path_utils_1.toPlatformPath; } }));
 //# sourceMappingURL=core.js.map
 
 /***/ }),
@@ -690,13 +711,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.issueCommand = void 0;
+exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(__nccwpck_require__(147));
-const os = __importStar(__nccwpck_require__(37));
-const utils_1 = __nccwpck_require__(278);
-function issueCommand(command, message) {
+const fs = __importStar(__nccwpck_require__(7147));
+const os = __importStar(__nccwpck_require__(2037));
+const uuid_1 = __nccwpck_require__(5840);
+const utils_1 = __nccwpck_require__(5278);
+function issueFileCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
         throw new Error(`Unable to find environment variable for file command ${command}`);
@@ -708,12 +730,27 @@ function issueCommand(command, message) {
         encoding: 'utf8'
     });
 }
-exports.issueCommand = issueCommand;
+exports.issueFileCommand = issueFileCommand;
+function prepareKeyValueMessage(key, value) {
+    const delimiter = `ghadelimiter_${uuid_1.v4()}`;
+    const convertedValue = utils_1.toCommandValue(value);
+    // These should realistically never happen, but just in case someone finds a
+    // way to exploit uuid generation let's not allow keys or values that contain
+    // the delimiter.
+    if (key.includes(delimiter)) {
+        throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter}"`);
+    }
+    if (convertedValue.includes(delimiter)) {
+        throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
+    }
+    return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
+}
+exports.prepareKeyValueMessage = prepareKeyValueMessage;
 //# sourceMappingURL=file-command.js.map
 
 /***/ }),
 
-/***/ 41:
+/***/ 8041:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -729,9 +766,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.OidcClient = void 0;
-const http_client_1 = __nccwpck_require__(255);
-const auth_1 = __nccwpck_require__(526);
-const core_1 = __nccwpck_require__(186);
+const http_client_1 = __nccwpck_require__(6255);
+const auth_1 = __nccwpck_require__(5526);
+const core_1 = __nccwpck_require__(2186);
 class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
         const requestOptions = {
@@ -797,7 +834,72 @@ exports.OidcClient = OidcClient;
 
 /***/ }),
 
-/***/ 327:
+/***/ 2981:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = void 0;
+const path = __importStar(__nccwpck_require__(1017));
+/**
+ * toPosixPath converts the given path to the posix form. On Windows, \\ will be
+ * replaced with /.
+ *
+ * @param pth. Path to transform.
+ * @return string Posix path.
+ */
+function toPosixPath(pth) {
+    return pth.replace(/[\\]/g, '/');
+}
+exports.toPosixPath = toPosixPath;
+/**
+ * toWin32Path converts the given path to the win32 form. On Linux, / will be
+ * replaced with \\.
+ *
+ * @param pth. Path to transform.
+ * @return string Win32 path.
+ */
+function toWin32Path(pth) {
+    return pth.replace(/[/]/g, '\\');
+}
+exports.toWin32Path = toWin32Path;
+/**
+ * toPlatformPath converts the given path to a platform-specific path. It does
+ * this by replacing instances of / and \ with the platform-specific path
+ * separator.
+ *
+ * @param pth The path to platformize.
+ * @return string The platform-specific path.
+ */
+function toPlatformPath(pth) {
+    return pth.replace(/[/\\]/g, path.sep);
+}
+exports.toPlatformPath = toPlatformPath;
+//# sourceMappingURL=path-utils.js.map
+
+/***/ }),
+
+/***/ 1327:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -813,8 +915,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
-const os_1 = __nccwpck_require__(37);
-const fs_1 = __nccwpck_require__(147);
+const os_1 = __nccwpck_require__(2037);
+const fs_1 = __nccwpck_require__(7147);
 const { access, appendFile, writeFile } = fs_1.promises;
 exports.SUMMARY_ENV_VAR = 'GITHUB_STEP_SUMMARY';
 exports.SUMMARY_DOCS_URL = 'https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary';
@@ -1087,7 +1189,7 @@ exports.summary = _summary;
 
 /***/ }),
 
-/***/ 278:
+/***/ 5278:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1134,7 +1236,7 @@ exports.toCommandProperties = toCommandProperties;
 
 /***/ }),
 
-/***/ 526:
+/***/ 5526:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -1222,7 +1324,7 @@ exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHand
 
 /***/ }),
 
-/***/ 255:
+/***/ 6255:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -1258,10 +1360,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HttpClient = exports.isHttps = exports.HttpClientResponse = exports.HttpClientError = exports.getProxyUrl = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
-const http = __importStar(__nccwpck_require__(685));
-const https = __importStar(__nccwpck_require__(687));
-const pm = __importStar(__nccwpck_require__(835));
-const tunnel = __importStar(__nccwpck_require__(294));
+const http = __importStar(__nccwpck_require__(3685));
+const https = __importStar(__nccwpck_require__(5687));
+const pm = __importStar(__nccwpck_require__(9835));
+const tunnel = __importStar(__nccwpck_require__(4294));
 var HttpCodes;
 (function (HttpCodes) {
     HttpCodes[HttpCodes["OK"] = 200] = "OK";
@@ -1834,7 +1936,7 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 
 /***/ }),
 
-/***/ 835:
+/***/ 9835:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1902,32 +2004,32 @@ exports.checkBypass = checkBypass;
 
 /***/ }),
 
-/***/ 337:
+/***/ 8337:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Client = void 0;
-const fs_1 = __nccwpck_require__(147);
-const path_1 = __nccwpck_require__(17);
-const tls_1 = __nccwpck_require__(404);
-const util_1 = __nccwpck_require__(837);
-const FtpContext_1 = __nccwpck_require__(52);
-const parseList_1 = __nccwpck_require__(993);
-const ProgressTracker_1 = __nccwpck_require__(170);
-const StringWriter_1 = __nccwpck_require__(184);
-const parseListMLSD_1 = __nccwpck_require__(157);
-const netUtils_1 = __nccwpck_require__(288);
-const transfer_1 = __nccwpck_require__(803);
-const parseControlResponse_1 = __nccwpck_require__(948);
+const fs_1 = __nccwpck_require__(7147);
+const path_1 = __nccwpck_require__(1017);
+const tls_1 = __nccwpck_require__(4404);
+const util_1 = __nccwpck_require__(3837);
+const FtpContext_1 = __nccwpck_require__(9052);
+const parseList_1 = __nccwpck_require__(2993);
+const ProgressTracker_1 = __nccwpck_require__(7170);
+const StringWriter_1 = __nccwpck_require__(8184);
+const parseListMLSD_1 = __nccwpck_require__(8157);
+const netUtils_1 = __nccwpck_require__(6288);
+const transfer_1 = __nccwpck_require__(5803);
+const parseControlResponse_1 = __nccwpck_require__(9948);
 // Use promisify to keep the library compatible with Node 8.
-const fsReadDir = util_1.promisify(fs_1.readdir);
-const fsMkDir = util_1.promisify(fs_1.mkdir);
-const fsStat = util_1.promisify(fs_1.stat);
-const fsOpen = util_1.promisify(fs_1.open);
-const fsClose = util_1.promisify(fs_1.close);
-const fsUnlink = util_1.promisify(fs_1.unlink);
+const fsReadDir = (0, util_1.promisify)(fs_1.readdir);
+const fsMkDir = (0, util_1.promisify)(fs_1.mkdir);
+const fsStat = (0, util_1.promisify)(fs_1.stat);
+const fsOpen = (0, util_1.promisify)(fs_1.open);
+const fsClose = (0, util_1.promisify)(fs_1.close);
+const fsUnlink = (0, util_1.promisify)(fs_1.unlink);
 const LIST_COMMANDS_DEFAULT = ["LIST -a", "LIST"];
 const LIST_COMMANDS_MLSD = ["MLSD", "LIST -a", "LIST"];
 /**
@@ -1980,7 +2082,7 @@ class Client {
             host,
             port,
             family: this.ftp.ipFamily
-        }, () => this.ftp.log(`Connected to ${netUtils_1.describeAddress(this.ftp.socket)} (${netUtils_1.describeTLS(this.ftp.socket)})`));
+        }, () => this.ftp.log(`Connected to ${(0, netUtils_1.describeAddress)(this.ftp.socket)} (${(0, netUtils_1.describeTLS)(this.ftp.socket)})`));
         return this._handleConnectResponse();
     }
     /**
@@ -1989,7 +2091,7 @@ class Client {
      */
     connectImplicitTLS(host = "localhost", port = 21, tlsOptions = {}) {
         this.ftp.reset();
-        this.ftp.socket = tls_1.connect(port, host, tlsOptions, () => this.ftp.log(`Connected to ${netUtils_1.describeAddress(this.ftp.socket)} (${netUtils_1.describeTLS(this.ftp.socket)})`));
+        this.ftp.socket = (0, tls_1.connect)(port, host, tlsOptions, () => this.ftp.log(`Connected to ${(0, netUtils_1.describeAddress)(this.ftp.socket)} (${(0, netUtils_1.describeTLS)(this.ftp.socket)})`));
         this.ftp.tlsOptions = tlsOptions;
         return this._handleConnectResponse();
     }
@@ -2002,14 +2104,13 @@ class Client {
                 // The connection has been destroyed by the FTPContext at this point.
                 task.reject(res);
             }
-            else if (parseControlResponse_1.positiveCompletion(res.code)) {
+            else if ((0, parseControlResponse_1.positiveCompletion)(res.code)) {
                 task.resolve(res);
             }
             // Reject all other codes, including 120 "Service ready in nnn minutes".
             else {
                 // Don't stay connected but don't replace the socket yet by using reset()
                 // so the user can inspect properties of this instance.
-                this.ftp.socket.destroy();
                 task.reject(new FtpContext_1.FTPError(res));
             }
         });
@@ -2050,9 +2151,9 @@ class Client {
      */
     async useTLS(options = {}, command = "AUTH TLS") {
         const ret = await this.send(command);
-        this.ftp.socket = await netUtils_1.upgradeSocket(this.ftp.socket, options);
+        this.ftp.socket = await (0, netUtils_1.upgradeSocket)(this.ftp.socket, options);
         this.ftp.tlsOptions = options; // Keep the TLS options for later data connections that should use the same options.
-        this.ftp.log(`Control socket is using: ${netUtils_1.describeTLS(this.ftp.socket)}`);
+        this.ftp.log(`Control socket is using: ${(0, netUtils_1.describeTLS)(this.ftp.socket)}`);
         return ret;
     }
     /**
@@ -2062,12 +2163,12 @@ class Client {
      * @param password  Password to use for login. Optional, default is "guest".
      */
     login(user = "anonymous", password = "guest") {
-        this.ftp.log(`Login security: ${netUtils_1.describeTLS(this.ftp.socket)}`);
+        this.ftp.log(`Login security: ${(0, netUtils_1.describeTLS)(this.ftp.socket)}`);
         return this.ftp.handle("USER " + user, (res, task) => {
             if (res instanceof Error) {
                 task.reject(res);
             }
-            else if (parseControlResponse_1.positiveCompletion(res.code)) { // User logged in proceed OR Command superfluous
+            else if ((0, parseControlResponse_1.positiveCompletion)(res.code)) { // User logged in proceed OR Command superfluous
                 task.resolve(res);
             }
             else if (res.code === 331) { // User name okay, need password
@@ -2157,7 +2258,7 @@ class Client {
         const res = await this.sendIgnoringError("FEAT");
         const features = new Map();
         // Not supporting any special features will be reported with a single line.
-        if (res.code < 400 && parseControlResponse_1.isMultiline(res.message)) {
+        if (res.code < 400 && (0, parseControlResponse_1.isMultiline)(res.message)) {
             // The first and last line wrap the multiline response, ignore them.
             res.message.split("\n").slice(1, -1).forEach(line => {
                 // A typical lines looks like: " REST STREAM" or " MDTM".
@@ -2189,7 +2290,7 @@ class Client {
         const validPath = await this.protectWhitespace(path);
         const res = await this.send(`MDTM ${validPath}`);
         const date = res.message.slice(4);
-        return parseListMLSD_1.parseMLSxDate(date);
+        return (0, parseListMLSD_1.parseMLSxDate)(date);
     }
     /**
      * Get the size of a file.
@@ -2273,7 +2374,7 @@ class Client {
      */
     async _uploadLocalFile(localPath, remotePath, command, options) {
         const fd = await fsOpen(localPath, "r");
-        const source = fs_1.createReadStream("", {
+        const source = (0, fs_1.createReadStream)("", {
             fd,
             start: options.localStart,
             end: options.localEndInclusive,
@@ -2297,7 +2398,7 @@ class Client {
             await this.prepareTransfer(this.ftp);
             // Keep the keyword `await` or the `finally` clause below runs too early
             // and removes the event listener for the source stream too early.
-            return await transfer_1.uploadFrom(source, {
+            return await (0, transfer_1.uploadFrom)(source, {
                 ftp: this.ftp,
                 tracker: this._progressTracker,
                 command,
@@ -2335,7 +2436,7 @@ class Client {
         const appendingToLocalFile = startAt > 0;
         const fileSystemFlags = appendingToLocalFile ? "r+" : "w";
         const fd = await fsOpen(localPath, fileSystemFlags);
-        const destination = fs_1.createWriteStream("", {
+        const destination = (0, fs_1.createWriteStream)("", {
             fd,
             start: startAt,
             autoClose: false
@@ -2367,7 +2468,7 @@ class Client {
             await this.prepareTransfer(this.ftp);
             // Keep the keyword `await` or the `finally` clause below runs too early
             // and removes the event listener for the source stream too early.
-            return await transfer_1.downloadTo(destination, {
+            return await (0, transfer_1.downloadTo)(destination, {
                 ftp: this.ftp,
                 tracker: this._progressTracker,
                 command: startAt > 0 ? `REST ${startAt}` : `RETR ${validPath}`,
@@ -2412,7 +2513,7 @@ class Client {
      */
     async _requestListWithCommand(command) {
         const buffer = new StringWriter_1.StringWriter();
-        await transfer_1.downloadTo(buffer, {
+        await (0, transfer_1.downloadTo)(buffer, {
             ftp: this.ftp,
             tracker: this._progressTracker,
             command,
@@ -2485,7 +2586,7 @@ class Client {
     async _uploadToWorkingDir(localDirPath) {
         const files = await fsReadDir(localDirPath);
         for (const file of files) {
-            const fullPath = path_1.join(localDirPath, file);
+            const fullPath = (0, path_1.join)(localDirPath, file);
             const stats = await fsStat(fullPath);
             if (stats.isFile()) {
                 await this.uploadFrom(fullPath, file);
@@ -2517,7 +2618,7 @@ class Client {
     async _downloadFromWorkingDir(localDirPath) {
         await ensureLocalDirectory(localDirPath);
         for (const file of await this.list()) {
-            const localPath = path_1.join(localDirPath, file.name);
+            const localPath = (0, path_1.join)(localDirPath, file.name);
             if (file.isDirectory) {
                 await this.cd(file.name);
                 await this._downloadFromWorkingDir(localPath);
@@ -2587,26 +2688,26 @@ class Client {
      * Try all available transfer strategies and pick the first one that works. Update `client` to
      * use the working strategy for all successive transfer requests.
      *
-     * @param transferModes
      * @returns a function that will try the provided strategies.
      */
-    _enterFirstCompatibleMode(transferModes) {
+    _enterFirstCompatibleMode(strategies) {
         return async (ftp) => {
-            ftp.log("Trying to find optimal transfer mode...");
-            for (const transferMode of transferModes) {
+            ftp.log("Trying to find optimal transfer strategy...");
+            let lastError = undefined;
+            for (const strategy of strategies) {
                 try {
-                    const res = await transferMode(ftp);
-                    ftp.log("Optimal transfer mode found.");
-                    this.prepareTransfer = transferMode; // eslint-disable-line require-atomic-updates
+                    const res = await strategy(ftp);
+                    ftp.log("Optimal transfer strategy found.");
+                    this.prepareTransfer = strategy; // eslint-disable-line require-atomic-updates
                     return res;
                 }
                 catch (err) {
                     // Try the next candidate no matter the exact error. It's possible that a server
                     // answered incorrectly to a strategy, for example a PASV answer to an EPSV.
-                    ftp.log(`Transfer mode failed: "${err.message}", will try next.`);
+                    lastError = err;
                 }
             }
-            throw new Error("None of the available transfer modes work.");
+            throw new Error(`None of the available transfer strategies work. Last error response was '${lastError}'.`);
         };
     }
     /**
@@ -2772,15 +2873,15 @@ FileInfo.UnixPermission = {
 
 /***/ }),
 
-/***/ 52:
+/***/ 9052:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FTPContext = exports.FTPError = void 0;
-const net_1 = __nccwpck_require__(808);
-const parseControlResponse_1 = __nccwpck_require__(948);
+const net_1 = __nccwpck_require__(1808);
+const parseControlResponse_1 = __nccwpck_require__(9948);
 /**
  * Describes an FTP server error response including the FTP response code.
  */
@@ -2844,7 +2945,8 @@ class FTPContext {
             return;
         }
         this._closingError = err;
-        // Before giving the user's task a chance to react, make sure we won't be bothered with any inputs.
+        this.send("QUIT"); // Don't wait for an answer
+        // Close the sockets but don't fully reset this context to preserve `this._closingError`.
         this._closeSocket(this._socket);
         this._closeSocket(this._dataSocket);
         // Give the user's task a chance to react, maybe cleanup resources.
@@ -2877,16 +2979,17 @@ class FTPContext {
     set socket(socket) {
         // No data socket should be open in any case where the control socket is set or upgraded.
         this.dataSocket = undefined;
+        // This being a reset, reset any other state apart from the socket.
         this.tlsOptions = {};
-        // This being a soft reset, remove any remaining partial response.
         this._partialResponse = "";
         if (this._socket) {
-            // Only close the current connection if the new is not an upgrade.
-            const isUpgrade = socket.localPort === this._socket.localPort;
-            if (!isUpgrade) {
-                this._socket.destroy();
+            const newSocketUpgradesExisting = socket.localPort === this._socket.localPort;
+            if (newSocketUpgradesExisting) {
+                this._removeSocketListeners(this.socket);
             }
-            this._removeSocketListeners(this._socket);
+            else {
+                this._closeSocket(this.socket);
+            }
         }
         if (socket) {
             // Setting a completely new control socket is in essence something like a reset. That's
@@ -2974,7 +3077,6 @@ class FTPContext {
      */
     handle(command, responseHandler) {
         if (this._task) {
-            // The user or client instance called `handle()` while a task is still running.
             const err = new Error("User launched a task while another one is still running. Forgot to use 'await' or '.then()'?");
             err.stack += `\nRunning task launched at: ${this._task.stack}`;
             this.closeWithError(err);
@@ -2982,27 +3084,25 @@ class FTPContext {
             // because the context closed already. That way, users will receive an exception where
             // they called this method by mistake.
         }
-        return new Promise((resolvePromise, rejectPromise) => {
-            const stack = new Error().stack || "Unknown call stack";
-            const resolver = {
-                resolve: (arg) => {
-                    this._stopTrackingTask();
-                    resolvePromise(arg);
-                },
-                reject: err => {
-                    this._stopTrackingTask();
-                    rejectPromise(err);
-                }
-            };
+        return new Promise((resolveTask, rejectTask) => {
             this._task = {
-                stack,
-                resolver,
-                responseHandler
+                stack: new Error().stack || "Unknown call stack",
+                responseHandler,
+                resolver: {
+                    resolve: arg => {
+                        this._stopTrackingTask();
+                        resolveTask(arg);
+                    },
+                    reject: err => {
+                        this._stopTrackingTask();
+                        rejectTask(err);
+                    }
+                }
             };
             if (this._closingError) {
                 // This client has been closed. Provide an error that describes this one as being caused
                 // by `_closingError`, include stack traces for both.
-                const err = new Error("Client is closed"); // Type 'Error' is not correctly defined, doesn't have 'code'.
+                const err = new Error(`Client is closed because ${this._closingError.message}`); // Type 'Error' is not correctly defined, doesn't have 'code'.
                 err.stack += `\nClosing reason: ${this._closingError.stack}`;
                 err.code = this._closingError.code !== undefined ? this._closingError.code : "0";
                 this._passToHandler(err);
@@ -3050,7 +3150,7 @@ class FTPContext {
         this.log(`< ${chunk}`);
         // This chunk might complete an earlier partial response.
         const completeResponse = this._partialResponse + chunk;
-        const parsed = parseControlResponse_1.parseControlResponse(completeResponse);
+        const parsed = (0, parseControlResponse_1.parseControlResponse)(completeResponse);
         // Remember any incomplete remainder.
         this._partialResponse = parsed.rest;
         // Each response group is passed along individually.
@@ -3091,7 +3191,10 @@ class FTPContext {
                 this.closeWithError(new Error(`Socket closed due to transmission error (${identifier})`));
             }
         });
-        socket.once("timeout", () => this.closeWithError(new Error(`Timeout (${identifier})`)));
+        socket.once("timeout", () => {
+            socket.destroy();
+            this.closeWithError(new Error(`Timeout (${identifier})`));
+        });
     }
     /**
      * Close a socket.
@@ -3099,8 +3202,11 @@ class FTPContext {
      */
     _closeSocket(socket) {
         if (socket) {
-            socket.destroy();
             this._removeSocketListeners(socket);
+            socket.on("error", () => { });
+            socket.on("timeout", () => socket.destroy());
+            socket.setTimeout(this.timeout);
+            socket.end();
         }
     }
     /**
@@ -3131,7 +3237,7 @@ exports.FTPContext = FTPContext;
 
 /***/ }),
 
-/***/ 170:
+/***/ 7170:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3211,7 +3317,7 @@ function noop() { }
 
 /***/ }),
 
-/***/ 677:
+/***/ 4677:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3221,14 +3327,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 /***/ }),
 
-/***/ 184:
+/***/ 8184:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StringWriter = void 0;
-const stream_1 = __nccwpck_require__(781);
+const stream_1 = __nccwpck_require__(2781);
 class StringWriter extends stream_1.Writable {
     constructor() {
         super(...arguments);
@@ -3252,14 +3358,18 @@ exports.StringWriter = StringWriter;
 
 /***/ }),
 
-/***/ 957:
+/***/ 7957:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -3272,26 +3382,26 @@ exports.enterPassiveModeIPv6 = exports.enterPassiveModeIPv4 = void 0;
 /**
  * Public API
  */
-__exportStar(__nccwpck_require__(337), exports);
-__exportStar(__nccwpck_require__(52), exports);
+__exportStar(__nccwpck_require__(8337), exports);
+__exportStar(__nccwpck_require__(9052), exports);
 __exportStar(__nccwpck_require__(202), exports);
-__exportStar(__nccwpck_require__(993), exports);
-__exportStar(__nccwpck_require__(677), exports);
-var transfer_1 = __nccwpck_require__(803);
+__exportStar(__nccwpck_require__(2993), exports);
+__exportStar(__nccwpck_require__(4677), exports);
+var transfer_1 = __nccwpck_require__(5803);
 Object.defineProperty(exports, "enterPassiveModeIPv4", ({ enumerable: true, get: function () { return transfer_1.enterPassiveModeIPv4; } }));
 Object.defineProperty(exports, "enterPassiveModeIPv6", ({ enumerable: true, get: function () { return transfer_1.enterPassiveModeIPv6; } }));
 
 
 /***/ }),
 
-/***/ 288:
+/***/ 6288:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ipIsPrivateV4Address = exports.upgradeSocket = exports.describeAddress = exports.describeTLS = void 0;
-const tls_1 = __nccwpck_require__(404);
+const tls_1 = __nccwpck_require__(4404);
 /**
  * Returns a string describing the encryption on a given socket instance.
  */
@@ -3321,7 +3431,7 @@ function upgradeSocket(socket, options) {
         const tlsOptions = Object.assign({}, options, {
             socket
         });
-        const tlsSocket = tls_1.connect(tlsOptions, () => {
+        const tlsSocket = (0, tls_1.connect)(tlsOptions, () => {
             const expectCertificate = tlsOptions.rejectUnauthorized !== false;
             if (expectCertificate && !tlsSocket.authorized) {
                 reject(tlsSocket.authorizationError);
@@ -3351,14 +3461,15 @@ function ipIsPrivateV4Address(ip = "") {
     const octets = ip.split(".").map(o => parseInt(o, 10));
     return octets[0] === 10 // 10.0.0.0 - 10.255.255.255
         || (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) // 172.16.0.0 - 172.31.255.255
-        || (octets[0] === 192 && octets[1] === 168); // 192.168.0.0 - 192.168.255.255
+        || (octets[0] === 192 && octets[1] === 168) // 192.168.0.0 - 192.168.255.255
+        || ip === "127.0.0.1";
 }
 exports.ipIsPrivateV4Address = ipIsPrivateV4Address;
 
 
 /***/ }),
 
-/***/ 948:
+/***/ 9948:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3433,14 +3544,18 @@ function isNotBlank(str) {
 
 /***/ }),
 
-/***/ 993:
+/***/ 2993:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -3459,9 +3574,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseList = void 0;
-const dosParser = __importStar(__nccwpck_require__(199));
-const unixParser = __importStar(__nccwpck_require__(622));
-const mlsdParser = __importStar(__nccwpck_require__(157));
+const dosParser = __importStar(__nccwpck_require__(6199));
+const unixParser = __importStar(__nccwpck_require__(2622));
+const mlsdParser = __importStar(__nccwpck_require__(8157));
 /**
  * Available directory listing parsers. These are candidates that will be tested
  * in the order presented. The first candidate will be used to parse the whole list.
@@ -3474,8 +3589,11 @@ const availableParsers = [
 function firstCompatibleParser(line, parsers) {
     return parsers.find(parser => parser.testLine(line) === true);
 }
-function stringIsNotBlank(str) {
+function isNotBlank(str) {
     return str.trim() !== "";
+}
+function isNotMeta(str) {
+    return !str.startsWith("total");
 }
 const REGEX_NEWLINE = /\r?\n/;
 /**
@@ -3484,7 +3602,8 @@ const REGEX_NEWLINE = /\r?\n/;
 function parseList(rawList) {
     const lines = rawList
         .split(REGEX_NEWLINE)
-        .filter(stringIsNotBlank);
+        .filter(isNotBlank)
+        .filter(isNotMeta);
     if (lines.length === 0) {
         return [];
     }
@@ -3503,7 +3622,7 @@ exports.parseList = parseList;
 
 /***/ }),
 
-/***/ 199:
+/***/ 6199:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3564,7 +3683,7 @@ exports.transformList = transformList;
 
 /***/ }),
 
-/***/ 157:
+/***/ 8157:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3603,7 +3722,7 @@ const factHandlersByName = {
         if (value.startsWith("OS.unix=slink")) {
             info.type = FileInfo_1.FileType.SymbolicLink;
             info.link = value.substr(value.indexOf(":") + 1);
-            return 1 /* Continue */;
+            return 1 /* FactHandlerResult.Continue */;
         }
         switch (value) {
             case "file":
@@ -3619,11 +3738,11 @@ const factHandlersByName = {
                 break;
             case "cdir": // Current directory being listed
             case "pdir": // Parent directory
-                return 2 /* IgnoreFile */; // Don't include these entries in the listing
+                return 2 /* FactHandlerResult.IgnoreFile */; // Don't include these entries in the listing
             default:
                 info.type = FileInfo_1.FileType.Unknown;
         }
-        return 1 /* Continue */;
+        return 1 /* FactHandlerResult.Continue */;
     },
     "unix.mode": (value, info) => {
         const digits = value.substr(-3);
@@ -3704,7 +3823,7 @@ function parseLine(line) {
             continue;
         }
         const result = factHandler(factValue, info);
-        if (result === 2 /* IgnoreFile */) {
+        if (result === 2 /* FactHandlerResult.IgnoreFile */) {
             return undefined;
         }
     }
@@ -3760,7 +3879,7 @@ exports.parseMLSxDate = parseMLSxDate;
 
 /***/ }),
 
-/***/ 622:
+/***/ 2622:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3802,7 +3921,7 @@ const JA_YEAR = "\u5e74";
  *    {@code @}   file has extended attributes
  */
 const RE_LINE = new RegExp("([bcdelfmpSs-])" // file type
-    + "(((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-])))\\+?" // permissions
+    + "(((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]?)))\\+?" // permissions
     + "\\s*" // separator TODO why allow it to be omitted??
     + "(\\d+)" // link count
     + "\\s+" // separator
@@ -3924,16 +4043,17 @@ function parseMode(r, w, x) {
 
 /***/ }),
 
-/***/ 803:
+/***/ 5803:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.downloadTo = exports.uploadFrom = exports.connectForPassiveTransfer = exports.parsePasvResponse = exports.enterPassiveModeIPv4 = exports.parseEpsvResponse = exports.enterPassiveModeIPv6 = void 0;
-const netUtils_1 = __nccwpck_require__(288);
-const tls_1 = __nccwpck_require__(404);
-const parseControlResponse_1 = __nccwpck_require__(948);
+const netUtils_1 = __nccwpck_require__(6288);
+const stream_1 = __nccwpck_require__(2781);
+const tls_1 = __nccwpck_require__(4404);
+const parseControlResponse_1 = __nccwpck_require__(9948);
 /**
  * Prepare a data socket using passive mode over IPv6.
  */
@@ -3982,7 +4102,7 @@ async function enterPassiveModeIPv4(ftp) {
     // We can't always perform this replacement because it's possible (although unlikely) that the FTP server
     // indeed uses a different host for data connections.
     const controlHost = ftp.socket.remoteAddress;
-    if (netUtils_1.ipIsPrivateV4Address(target.host) && controlHost && !netUtils_1.ipIsPrivateV4Address(controlHost)) {
+    if ((0, netUtils_1.ipIsPrivateV4Address)(target.host) && controlHost && !(0, netUtils_1.ipIsPrivateV4Address)(controlHost)) {
         target.host = controlHost;
     }
     await connectForPassiveTransfer(target.host, target.port, ftp);
@@ -4006,15 +4126,21 @@ function parsePasvResponse(message) {
 exports.parsePasvResponse = parsePasvResponse;
 function connectForPassiveTransfer(host, port, ftp) {
     return new Promise((resolve, reject) => {
+        let socket = ftp._newSocket();
         const handleConnErr = function (err) {
             err.message = "Can't open data connection in passive mode: " + err.message;
             reject(err);
         };
-        let socket = ftp._newSocket();
+        const handleTimeout = function () {
+            socket.destroy();
+            reject(new Error(`Timeout when trying to open data connection to ${host}:${port}`));
+        };
+        socket.setTimeout(ftp.timeout);
         socket.on("error", handleConnErr);
+        socket.on("timeout", handleTimeout);
         socket.connect({ port, host, family: ftp.ipFamily }, () => {
             if (ftp.socket instanceof tls_1.TLSSocket) {
-                socket = tls_1.connect(Object.assign({}, ftp.tlsOptions, {
+                socket = (0, tls_1.connect)(Object.assign({}, ftp.tlsOptions, {
                     socket,
                     // Reuse the TLS session negotiated earlier when the control connection
                     // was upgraded. Servers expect this because it provides additional
@@ -4033,6 +4159,7 @@ function connectForPassiveTransfer(host, port, ftp) {
             }
             // Let the FTPContext listen to errors from now on, remove local handler.
             socket.removeListener("error", handleConnErr);
+            socket.removeListener("timeout", handleTimeout);
             ftp.dataSocket = socket;
             resolve();
         });
@@ -4142,18 +4269,22 @@ function uploadFrom(source, config) {
             // 'secureConnect'. If this hasn't happened yet, getCipher() returns undefined.
             const canUpload = "getCipher" in dataSocket ? dataSocket.getCipher() !== undefined : true;
             onConditionOrEvent(canUpload, dataSocket, "secureConnect", () => {
-                config.ftp.log(`Uploading to ${netUtils_1.describeAddress(dataSocket)} (${netUtils_1.describeTLS(dataSocket)})`);
+                config.ftp.log(`Uploading to ${(0, netUtils_1.describeAddress)(dataSocket)} (${(0, netUtils_1.describeTLS)(dataSocket)})`);
                 resolver.onDataStart(config.remotePath, config.type);
-                source.pipe(dataSocket).once("finish", () => {
-                    dataSocket.destroy(); // Explicitly close/destroy the socket to signal the end.
-                    resolver.onDataDone(task);
+                (0, stream_1.pipeline)(source, dataSocket, err => {
+                    if (err) {
+                        resolver.onError(task, err);
+                    }
+                    else {
+                        resolver.onDataDone(task);
+                    }
                 });
             });
         }
-        else if (parseControlResponse_1.positiveCompletion(res.code)) { // Transfer complete
+        else if ((0, parseControlResponse_1.positiveCompletion)(res.code)) { // Transfer complete
             resolver.onControlDone(task, res);
         }
-        else if (parseControlResponse_1.positiveIntermediate(res.code)) {
+        else if ((0, parseControlResponse_1.positiveIntermediate)(res.code)) {
             resolver.onUnexpectedRequest(res);
         }
         // Ignore all other positive preliminary response codes (< 200)
@@ -4164,9 +4295,6 @@ function downloadTo(destination, config) {
     if (!config.ftp.dataSocket) {
         throw new Error("Download will be initiated but no data connection is available.");
     }
-    // It's possible that data transmission begins before the control socket
-    // receives the announcement. Start listening for data immediately.
-    config.ftp.dataSocket.pipe(destination);
     const resolver = new TransferResolver(config.ftp, config.tracker);
     return config.ftp.handle(config.command, (res, task) => {
         if (res instanceof Error) {
@@ -4178,17 +4306,24 @@ function downloadTo(destination, config) {
                 resolver.onError(task, new Error("Download should begin but no data connection is available."));
                 return;
             }
-            config.ftp.log(`Downloading from ${netUtils_1.describeAddress(dataSocket)} (${netUtils_1.describeTLS(dataSocket)})`);
+            config.ftp.log(`Downloading from ${(0, netUtils_1.describeAddress)(dataSocket)} (${(0, netUtils_1.describeTLS)(dataSocket)})`);
             resolver.onDataStart(config.remotePath, config.type);
-            onConditionOrEvent(isWritableFinished(destination), destination, "finish", () => resolver.onDataDone(task));
+            (0, stream_1.pipeline)(dataSocket, destination, err => {
+                if (err) {
+                    resolver.onError(task, err);
+                }
+                else {
+                    resolver.onDataDone(task);
+                }
+            });
         }
         else if (res.code === 350) { // Restarting at startAt.
             config.ftp.send("RETR " + config.remotePath);
         }
-        else if (parseControlResponse_1.positiveCompletion(res.code)) { // Transfer complete
+        else if ((0, parseControlResponse_1.positiveCompletion)(res.code)) { // Transfer complete
             resolver.onControlDone(task, res);
         }
-        else if (parseControlResponse_1.positiveIntermediate(res.code)) {
+        else if ((0, parseControlResponse_1.positiveIntermediate)(res.code)) {
             resolver.onUnexpectedRequest(res);
         }
         // Ignore all other positive preliminary response codes (< 200)
@@ -4212,43 +4347,31 @@ function onConditionOrEvent(condition, emitter, eventName, action) {
         emitter.once(eventName, () => action());
     }
 }
-/**
- * Detect whether a writable stream is finished, supporting Node 8.
- * From https://github.com/nodejs/node/blob/3e2a3007107b7a100794f4e4adbde19263fc7464/lib/internal/streams/end-of-stream.js#L28-L33
- */
-function isWritableFinished(stream) {
-    if (stream.writableFinished)
-        return true;
-    const wState = stream._writableState;
-    if (!wState || wState.errored)
-        return false;
-    return wState.finished || (wState.ended && wState.length === 0);
-}
 
 
 /***/ }),
 
-/***/ 294:
+/***/ 4294:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-module.exports = __nccwpck_require__(219);
+module.exports = __nccwpck_require__(4219);
 
 
 /***/ }),
 
-/***/ 219:
+/***/ 4219:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var net = __nccwpck_require__(808);
-var tls = __nccwpck_require__(404);
-var http = __nccwpck_require__(685);
-var https = __nccwpck_require__(687);
-var events = __nccwpck_require__(361);
-var assert = __nccwpck_require__(491);
-var util = __nccwpck_require__(837);
+var net = __nccwpck_require__(1808);
+var tls = __nccwpck_require__(4404);
+var http = __nccwpck_require__(3685);
+var https = __nccwpck_require__(5687);
+var events = __nccwpck_require__(2361);
+var assert = __nccwpck_require__(9491);
+var util = __nccwpck_require__(3837);
 
 
 exports.httpOverHttp = httpOverHttp;
@@ -4508,7 +4631,653 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 491:
+/***/ 5840:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "v1", ({
+  enumerable: true,
+  get: function () {
+    return _v.default;
+  }
+}));
+Object.defineProperty(exports, "v3", ({
+  enumerable: true,
+  get: function () {
+    return _v2.default;
+  }
+}));
+Object.defineProperty(exports, "v4", ({
+  enumerable: true,
+  get: function () {
+    return _v3.default;
+  }
+}));
+Object.defineProperty(exports, "v5", ({
+  enumerable: true,
+  get: function () {
+    return _v4.default;
+  }
+}));
+Object.defineProperty(exports, "NIL", ({
+  enumerable: true,
+  get: function () {
+    return _nil.default;
+  }
+}));
+Object.defineProperty(exports, "version", ({
+  enumerable: true,
+  get: function () {
+    return _version.default;
+  }
+}));
+Object.defineProperty(exports, "validate", ({
+  enumerable: true,
+  get: function () {
+    return _validate.default;
+  }
+}));
+Object.defineProperty(exports, "stringify", ({
+  enumerable: true,
+  get: function () {
+    return _stringify.default;
+  }
+}));
+Object.defineProperty(exports, "parse", ({
+  enumerable: true,
+  get: function () {
+    return _parse.default;
+  }
+}));
+
+var _v = _interopRequireDefault(__nccwpck_require__(8628));
+
+var _v2 = _interopRequireDefault(__nccwpck_require__(6409));
+
+var _v3 = _interopRequireDefault(__nccwpck_require__(5122));
+
+var _v4 = _interopRequireDefault(__nccwpck_require__(9120));
+
+var _nil = _interopRequireDefault(__nccwpck_require__(5332));
+
+var _version = _interopRequireDefault(__nccwpck_require__(1595));
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+var _parse = _interopRequireDefault(__nccwpck_require__(2746));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
+/***/ 4569:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function md5(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('md5').update(bytes).digest();
+}
+
+var _default = md5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 5332:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = '00000000-0000-0000-0000-000000000000';
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 2746:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function parse(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
+
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
+
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
+
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
+}
+
+var _default = parse;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 814:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 807:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = rng;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
+
+let poolPtr = rnds8Pool.length;
+
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    _crypto.default.randomFillSync(rnds8Pool);
+
+    poolPtr = 0;
+  }
+
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
+}
+
+/***/ }),
+
+/***/ 5274:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _crypto = _interopRequireDefault(__nccwpck_require__(6113));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return _crypto.default.createHash('sha1').update(bytes).digest();
+}
+
+var _default = sha1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8950:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+var _default = stringify;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 8628:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _rng = _interopRequireDefault(__nccwpck_require__(807));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+let _nodeId;
+
+let _clockseq; // Previous uuid creation time
+
+
+let _lastMSecs = 0;
+let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+
+function v1(options, buf, offset) {
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || _rng.default)();
+
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+    }
+
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+
+
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf || (0, _stringify.default)(b);
+}
+
+var _default = v1;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6409:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(5998));
+
+var _md = _interopRequireDefault(__nccwpck_require__(4569));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v3 = (0, _v.default)('v3', 0x30, _md.default);
+var _default = v3;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 5998:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = _default;
+exports.URL = exports.DNS = void 0;
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+var _parse = _interopRequireDefault(__nccwpck_require__(2746));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  const bytes = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+
+  return bytes;
+}
+
+const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+exports.DNS = DNS;
+const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+exports.URL = URL;
+
+function _default(name, version, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
+    }
+
+    if (typeof namespace === 'string') {
+      namespace = (0, _parse.default)(namespace);
+    }
+
+    if (namespace.length !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    } // Compute hash of namespace and value, Per 4.3
+    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
+    // hashfunc([...namespace, ... value])`
+
+
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
+      }
+
+      return buf;
+    }
+
+    return (0, _stringify.default)(bytes);
+  } // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name; // eslint-disable-next-line no-empty
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+}
+
+/***/ }),
+
+/***/ 5122:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _rng = _interopRequireDefault(__nccwpck_require__(807));
+
+var _stringify = _interopRequireDefault(__nccwpck_require__(8950));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function v4(options, buf, offset) {
+  options = options || {};
+
+  const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return (0, _stringify.default)(rnds);
+}
+
+var _default = v4;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 9120:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _v = _interopRequireDefault(__nccwpck_require__(5998));
+
+var _sha = _interopRequireDefault(__nccwpck_require__(5274));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v5 = (0, _v.default)('v5', 0x50, _sha.default);
+var _default = v5;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 6900:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _regex = _interopRequireDefault(__nccwpck_require__(814));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(uuid) {
+  return typeof uuid === 'string' && _regex.default.test(uuid);
+}
+
+var _default = validate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 1595:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _validate = _interopRequireDefault(__nccwpck_require__(6900));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function version(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  return parseInt(uuid.substr(14, 1), 16);
+}
+
+var _default = version;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 9491:
 /***/ ((module) => {
 
 "use strict";
@@ -4516,7 +5285,15 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 361:
+/***/ 6113:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("crypto");
+
+/***/ }),
+
+/***/ 2361:
 /***/ ((module) => {
 
 "use strict";
@@ -4524,7 +5301,7 @@ module.exports = require("events");
 
 /***/ }),
 
-/***/ 147:
+/***/ 7147:
 /***/ ((module) => {
 
 "use strict";
@@ -4532,7 +5309,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 685:
+/***/ 3685:
 /***/ ((module) => {
 
 "use strict";
@@ -4540,7 +5317,7 @@ module.exports = require("http");
 
 /***/ }),
 
-/***/ 687:
+/***/ 5687:
 /***/ ((module) => {
 
 "use strict";
@@ -4548,7 +5325,7 @@ module.exports = require("https");
 
 /***/ }),
 
-/***/ 808:
+/***/ 1808:
 /***/ ((module) => {
 
 "use strict";
@@ -4556,7 +5333,7 @@ module.exports = require("net");
 
 /***/ }),
 
-/***/ 37:
+/***/ 2037:
 /***/ ((module) => {
 
 "use strict";
@@ -4564,7 +5341,7 @@ module.exports = require("os");
 
 /***/ }),
 
-/***/ 17:
+/***/ 1017:
 /***/ ((module) => {
 
 "use strict";
@@ -4572,7 +5349,7 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ 781:
+/***/ 2781:
 /***/ ((module) => {
 
 "use strict";
@@ -4580,7 +5357,7 @@ module.exports = require("stream");
 
 /***/ }),
 
-/***/ 404:
+/***/ 4404:
 /***/ ((module) => {
 
 "use strict";
@@ -4588,7 +5365,7 @@ module.exports = require("tls");
 
 /***/ }),
 
-/***/ 837:
+/***/ 3837:
 /***/ ((module) => {
 
 "use strict";
@@ -4638,7 +5415,7 @@ module.exports = require("util");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
