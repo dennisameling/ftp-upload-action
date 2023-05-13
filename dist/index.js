@@ -2210,7 +2210,7 @@ class Client {
         this.availableListCommands = supportsMLSD ? LIST_COMMANDS_MLSD : LIST_COMMANDS_DEFAULT;
         await this.send("TYPE I"); // Binary mode
         await this.sendIgnoringError("STRU F"); // Use file structure
-        await this.sendIgnoringError("OPTS UTF8 ON"); // Some servers expect UTF-8 to be enabled explicitly
+        await this.sendIgnoringError("OPTS UTF8 ON"); // Some servers expect UTF-8 to be enabled explicitly and setting before login might not have worked.
         if (supportsMLSD) {
             await this.sendIgnoringError("OPTS MLST type;size;modify;unique;unix.mode;unix.owner;unix.group;unix.ownername;unix.groupname;"); // Make sure MLSD listings include all we can parse
         }
@@ -2245,6 +2245,9 @@ class Client {
             secureOptions.host = (_b = secureOptions.host) !== null && _b !== void 0 ? _b : options.host;
             await this.useTLS(secureOptions);
         }
+        // Set UTF-8 on before login in case there are non-ascii characters in user or password.
+        // Note that this might not work before login depending on server.
+        await this.sendIgnoringError("OPTS UTF8 ON");
         await this.login(options.user, options.password);
         await this.useDefaultSettings();
         return welcome;
@@ -2342,7 +2345,10 @@ class Client {
      */
     async remove(path, ignoreErrorCodes = false) {
         const validPath = await this.protectWhitespace(path);
-        return this.send(`DELE ${validPath}`, ignoreErrorCodes);
+        if (ignoreErrorCodes) {
+            return this.sendIgnoringError(`DELE ${validPath}`);
+        }
+        return this.send(`DELE ${validPath}`);
     }
     /**
      * Report transfer progress for any upload or download to a given handler.
@@ -2878,12 +2884,12 @@ class FileInfo {
         this.rawModifiedAt = rawModifiedAt;
     }
 }
-exports.FileInfo = FileInfo;
 FileInfo.UnixPermission = {
     Read: 4,
     Write: 2,
     Execute: 1
 };
+exports.FileInfo = FileInfo;
 
 
 /***/ }),
@@ -2908,6 +2914,9 @@ class FTPError extends Error {
     }
 }
 exports.FTPError = FTPError;
+function doNothing() {
+    /** Do nothing */
+}
 /**
  * FTPContext holds the control and data sockets of an FTP connection and provides a
  * simplified way to interact with an FTP server, handle responses, errors and timeouts.
@@ -2960,9 +2969,8 @@ class FTPContext {
             return;
         }
         this._closingError = err;
-        this.send("QUIT"); // Don't wait for an answer
         // Close the sockets but don't fully reset this context to preserve `this._closingError`.
-        this._closeSocket(this._socket);
+        this._closeControlSocket();
         this._closeSocket(this._dataSocket);
         // Give the user's task a chance to react, maybe cleanup resources.
         this._passToHandler(err);
@@ -3003,7 +3011,7 @@ class FTPContext {
                 this._removeSocketListeners(this.socket);
             }
             else {
-                this._closeSocket(this.socket);
+                this._closeControlSocket();
             }
         }
         if (socket) {
@@ -3212,13 +3220,22 @@ class FTPContext {
         });
     }
     /**
-     * Close a socket.
+     * Close the control socket. Sends QUIT, then FIN, and ignores any response or error.
+     */
+    _closeControlSocket() {
+        this._removeSocketListeners(this._socket);
+        this._socket.on("error", doNothing);
+        this.send("QUIT");
+        this._closeSocket(this._socket);
+    }
+    /**
+     * Close a socket. Sends FIN and ignores any error.
      * @protected
      */
     _closeSocket(socket) {
         if (socket) {
             this._removeSocketListeners(socket);
-            socket.on("error", () => { });
+            socket.on("error", doNothing);
             socket.on("timeout", () => socket.destroy());
             socket.setTimeout(this.timeout);
             socket.end();
