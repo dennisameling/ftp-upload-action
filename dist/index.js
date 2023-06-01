@@ -99,27 +99,22 @@ function run() {
             try {
                 for (var _d = true, _e = __asyncValues((0, util_1.getFiles)(localDir, absRoot
                 // eslint-disable-next-line no-undef
-                )), _f; _f = yield _e.next(), _a = _f.done, !_a;) {
+                )), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
                     _c = _f.value;
                     _d = false;
-                    try {
-                        const fileObject = _c;
-                        const localCurrentDir = fileObject.folder.replace(localDir, '');
-                        core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
-                        const serverFolder = `${serverDir}${localCurrentDir}`;
-                        core.debug(JSON.stringify(fileObject));
-                        yield client.ensureDir(serverFolder);
-                        yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
-                        // Go back to the original folder
-                        if (fileObject.dirLevel > 0) {
-                            for (let i = 0; i < fileObject.dirLevel; i++) {
-                                core.debug('Going one folder up...');
-                                yield client.cdup();
-                            }
+                    const fileObject = _c;
+                    const localCurrentDir = fileObject.folder.replace(localDir, '');
+                    core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
+                    const serverFolder = `${serverDir}${localCurrentDir}`;
+                    core.debug(JSON.stringify(fileObject));
+                    yield client.ensureDir(serverFolder);
+                    yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
+                    // Go back to the original folder
+                    if (fileObject.dirLevel > 0) {
+                        for (let i = 0; i < fileObject.dirLevel; i++) {
+                            core.debug('Going one folder up...');
+                            yield client.cdup();
                         }
-                    }
-                    finally {
-                        _d = true;
                     }
                 }
             }
