@@ -35,4 +35,4 @@ Tested and works on:
 | port | FTP port number | no | 21 |
 | secure | True uses FTPS, while false uses plain FTP. Defaults to true. | no | true |
 | local_dir | Folder to upload from, must end with trailing slash / | no | ./ |
-| local_dir | Path to upload to on the server. Must end with trailing slash / | no | ./ |
+| server_dir | Path to upload to on the server. Must end with trailing slash / | no | ./ |
