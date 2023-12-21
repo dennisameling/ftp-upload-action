@@ -29,143 +29,108 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const ftp = __importStar(__nccwpck_require__(7957));
 const path = __importStar(__nccwpck_require__(1017));
 const util_1 = __nccwpck_require__(4024);
-function run() {
-    var _a, e_1, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        const server = core.getInput('server', { required: true });
-        const username = core.getInput('username', { required: true });
-        const password = core.getInput('password', { required: true });
-        let port = Number(core.getInput('port'));
-        const secureInput = core.getInput('secure');
-        let localDir = core.getInput('local_dir');
-        let serverDir = core.getInput('server_dir');
-        const timeoutMs = 30000;
-        let secure = true;
-        const client = new ftp.Client(timeoutMs);
-        if (!port) {
-            port = 21;
+async function run() {
+    const server = core.getInput('server', { required: true });
+    const username = core.getInput('username', { required: true });
+    const password = core.getInput('password', { required: true });
+    let port = Number(core.getInput('port'));
+    const secureInput = core.getInput('secure');
+    let localDir = core.getInput('local_dir');
+    let serverDir = core.getInput('server_dir');
+    const timeoutMs = 30000;
+    let secure = true;
+    const client = new ftp.Client(timeoutMs);
+    if (!port) {
+        port = 21;
+    }
+    if (secureInput === 'false') {
+        secure = false;
+    }
+    if (localDir.length === 0) {
+        localDir = './';
+    }
+    if (serverDir.length === 0) {
+        serverDir = './';
+    }
+    try {
+        core.info('Connecting to server...');
+        if (core.isDebug()) {
+            client.ftp.verbose = true;
         }
-        if (secureInput === 'false') {
-            secure = false;
-        }
-        if (localDir.length === 0) {
-            localDir = './';
-        }
-        if (serverDir.length === 0) {
-            serverDir = './';
-        }
-        try {
-            core.info('Connecting to server...');
-            if (core.isDebug()) {
-                client.ftp.verbose = true;
-            }
-            yield client.access({
-                host: server,
-                user: username,
-                password,
-                secure,
-                port
-            });
-            core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
-        }
-        catch (err) {
-            core.setFailed(`Error while connecting to the server: ${err}`);
-            return;
-        }
-        try {
-            const absRoot = path.resolve(localDir);
-            core.debug(`Using this root directory: ${absRoot}`);
-            try {
-                for (var _d = true, _e = __asyncValues((0, util_1.getFiles)(localDir, absRoot
-                // eslint-disable-next-line no-undef
-                )), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
-                    _c = _f.value;
-                    _d = false;
-                    const fileObject = _c;
-                    const localCurrentDir = fileObject.folder.replace(localDir, '');
-                    core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
-                    const serverFolder = `${serverDir}${localCurrentDir}`;
-                    core.debug(JSON.stringify(fileObject));
-                    yield client.ensureDir(serverFolder);
-                    yield retryRequest(() => __awaiter(this, void 0, void 0, function* () { return yield client.uploadFrom(fileObject.fullPath, fileObject.filename); }));
-                    // Go back to the original folder
-                    if (fileObject.dirLevel > 0) {
-                        for (let i = 0; i < fileObject.dirLevel; i++) {
-                            core.debug('Going one folder up...');
-                            yield client.cdup();
-                        }
-                    }
+        await client.access({
+            host: server,
+            user: username,
+            password,
+            secure,
+            port
+        });
+        core.info(`Successfully connected to server. Starting upload from folder ${localDir}`);
+    }
+    catch (err) {
+        core.setFailed(`Error while connecting to the server: ${err}`);
+        return;
+    }
+    try {
+        const absRoot = path.resolve(localDir);
+        core.debug(`Using this root directory: ${absRoot}`);
+        for await (const fileObject of (0, util_1.getFiles)(localDir, absRoot)) {
+            const localCurrentDir = fileObject.folder.replace(localDir, '');
+            core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`);
+            const serverFolder = `${serverDir}${localCurrentDir}`;
+            core.debug(JSON.stringify(fileObject));
+            await client.ensureDir(serverFolder);
+            await retryRequest(async () => await client.uploadFrom(fileObject.fullPath, fileObject.filename));
+            // Go back to the original folder
+            if (fileObject.dirLevel > 0) {
+                for (let i = 0; i < fileObject.dirLevel; i++) {
+                    core.debug('Going one folder up...');
+                    await client.cdup();
                 }
             }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
-            core.info('All done!');
         }
-        catch (err) {
-            core.setFailed(`Error while transferring one or more files: ${err}`);
-        }
-        core.info('Closing connection...');
-        client.close();
-    });
+        core.info('All done!');
+    }
+    catch (err) {
+        core.setFailed(`Error while transferring one or more files: ${err}`);
+    }
+    core.info('Closing connection...');
+    client.close();
 }
 /**
  * retry a request
  *
  * @example retryRequest(async () => await item());
  */
-function retryRequest(callback, isFinalAttempt = false) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            return yield callback();
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        }
-        catch (e) {
-            if (e.code >= 400 && e.code <= 499) {
-                core.info('400 level error from server when performing action - retrying...');
-                core.info(e);
-                if (e.code === 426) {
-                    core.info('Connection closed. This library does not currently handle reconnects');
-                    throw e;
-                }
-                // Wait for 5 seconds before retrying
-                yield new Promise(resolve => setTimeout(resolve, 5000));
-                // Super ugly means of retrying twice
-                if (isFinalAttempt) {
-                    return yield callback();
-                }
-                return yield retryRequest(callback, true);
-            }
-            else {
+async function retryRequest(callback, isFinalAttempt = false) {
+    try {
+        return await callback();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }
+    catch (e) {
+        if (e.code >= 400 && e.code <= 499) {
+            core.info('400 level error from server when performing action - retrying...');
+            core.info(e);
+            if (e.code === 426) {
+                core.info('Connection closed. This library does not currently handle reconnects');
                 throw e;
             }
+            // Wait for 5 seconds before retrying
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            // Super ugly means of retrying twice
+            if (isFinalAttempt) {
+                return await callback();
+            }
+            return await retryRequest(callback, true);
         }
-    });
+        else {
+            throw e;
+        }
+    }
 }
 run();
 
@@ -173,35 +138,10 @@ run();
 /***/ }),
 
 /***/ 4024:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
-var __await = (this && this.__await) || function (v) { return this instanceof __await ? (this.v = v, this) : new __await(v); }
-var __asyncDelegator = (this && this.__asyncDelegator) || function (o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: false } : f ? f(v) : v; } : f; }
-};
-var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function awaitReturn(f) { return function (v) { return Promise.resolve(v).then(f, reject); }; }
-    function verb(n, f) { if (g[n]) { i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; if (f) i[n] = f(i[n]); } }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFiles = void 0;
 const path_1 = __nccwpck_require__(1017);
@@ -213,26 +153,22 @@ const fs_1 = __nccwpck_require__(7147);
  * @param absRoot The absolute root directory (so we can return relative paths)
  * @param dirLevel Directory level. Root = 0, subdirectory = 1, etc.
  */
-function getFiles(dir, absRoot, dirLevel = 0
-// eslint-disable-next-line no-undef
-) {
-    return __asyncGenerator(this, arguments, function* getFiles_1() {
-        const dirents = (0, fs_1.readdirSync)(dir, { withFileTypes: true });
-        for (const dirent of dirents) {
-            const res = (0, path_1.resolve)(dir, dirent.name);
-            if (dirent.isDirectory()) {
-                yield __await(yield* __asyncDelegator(__asyncValues(getFiles(res, absRoot, dirLevel + 1))));
-            }
-            else {
-                yield yield __await({
-                    folder: (0, path_1.relative)(absRoot, dir),
-                    filename: dirent.name,
-                    fullPath: res,
-                    dirLevel
-                });
-            }
+async function* getFiles(dir, absRoot, dirLevel = 0) {
+    const dirents = (0, fs_1.readdirSync)(dir, { withFileTypes: true });
+    for (const dirent of dirents) {
+        const res = (0, path_1.resolve)(dir, dirent.name);
+        if (dirent.isDirectory()) {
+            yield* getFiles(res, absRoot, dirLevel + 1);
         }
-    });
+        else {
+            yield {
+                folder: (0, path_1.relative)(absRoot, dir),
+                filename: dirent.name,
+                fullPath: res,
+                dirLevel
+            };
+        }
+    }
 }
 exports.getFiles = getFiles;
 

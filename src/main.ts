@@ -63,7 +63,6 @@ async function run(): Promise<void> {
     for await (const fileObject of getFiles(
       localDir,
       absRoot
-      // eslint-disable-next-line no-undef
     ) as AsyncIterable<File>) {
       const localCurrentDir = fileObject.folder.replace(localDir, '')
       core.info(`Uploading ${localCurrentDir}/${fileObject.filename}...`)
