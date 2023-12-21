@@ -19,7 +19,6 @@ export async function* getFiles(
   dir: string,
   absRoot: string,
   dirLevel = 0
-  // eslint-disable-next-line no-undef
 ): File | AsyncIterable<File> {
   const dirents = readdirSync(dir, {withFileTypes: true})
   for (const dirent of dirents) {
