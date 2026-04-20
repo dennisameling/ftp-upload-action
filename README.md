@@ -16,7 +16,7 @@ Tested and works on:
 ## Basic usage
 
 ```YAML
-  uses: dennisameling/ftp-upload-action@v1
+  uses: dennisameling/ftp-upload-action@v2
   with:
     server: ${{ secrets.FTP_SERVER }}
     username: ${{ secrets.FTP_USER }}
