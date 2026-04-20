@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm run all
+      - uses: actions/setup-node@v6
+        with:
+          cache: 'pnpm'
+          node-version-file: '.node-version'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run all
 
   test:
     needs: build
