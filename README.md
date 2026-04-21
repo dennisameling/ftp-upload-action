@@ -25,6 +25,24 @@ Tested and works on:
     server_dir: ./ # Should always end with /
 ```
 
+## Known limitations
+
+### TLS 1.3 FTPS servers are not supported
+
+This Action uses [`basic-ftp`](https://github.com/patrickjuchli/basic-ftp), which does not yet support TLS 1.3 session resumption on the data channel (see [basic-ftp#60](https://github.com/patrickjuchli/basic-ftp/issues/60)). If your FTP server negotiates TLS 1.3, most data connections will fail and you will see errors like:
+
+```
+FTPError: 425 Unable to build data connection: Operation not permitted
+400 level error from server when performing action - retrying...
+Error: Error while transferring one or more files: FTPError: 425 Unable to build data connection: Operation not permitted
+```
+
+Until the upstream issue is resolved, the workaround is to force the server to use TLS 1.2 for FTPS. On ProFTPd (e.g. Plesk), add the following to your config:
+
+```
+TLSProtocol TLSv1.2
+```
+
 ## Available inputs
 
 | Key | Description | Required | Default |
