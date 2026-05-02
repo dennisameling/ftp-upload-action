@@ -1,2 +1,5 @@
 allowBuilds:
   unrs-resolver: false
+
+onlyBuiltDependencies:
+  - "basic-ftp"

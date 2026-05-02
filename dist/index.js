@@ -8,13 +8,13 @@ import path__default, { resolve, relative } from 'path';
 import http from 'http';
 import https from 'https';
 import require$$0$6 from 'net';
-import require$$2 from 'tls';
+import require$$1 from 'tls';
 import events$1 from 'events';
 import 'assert';
 import require$$6 from 'util';
 import require$$0$1 from 'node:assert';
 import require$$0$3 from 'node:net';
-import require$$2$1 from 'node:http';
+import require$$2 from 'node:http';
 import require$$0$2 from 'node:stream';
 import require$$0 from 'node:buffer';
 import require$$0$4 from 'node:util';
@@ -22,14 +22,14 @@ import require$$7 from 'node:querystring';
 import require$$8 from 'node:events';
 import require$$0$5 from 'node:diagnostics_channel';
 import require$$5 from 'node:tls';
-import require$$1$1 from 'node:zlib';
+import require$$1$2 from 'node:zlib';
 import require$$5$1 from 'node:perf_hooks';
 import require$$8$1 from 'node:util/types';
-import require$$1 from 'node:worker_threads';
-import require$$1$2 from 'node:url';
+import require$$1$1 from 'node:worker_threads';
+import require$$1$3 from 'node:url';
 import require$$5$2 from 'node:async_hooks';
-import require$$1$3 from 'node:console';
-import require$$1$4 from 'node:dns';
+import require$$1$4 from 'node:console';
+import require$$1$5 from 'node:dns';
 import require$$5$3 from 'string_decoder';
 import 'child_process';
 import 'timers';
@@ -165,7 +165,7 @@ var hasRequiredTunnel$1;
 function requireTunnel$1 () {
 	if (hasRequiredTunnel$1) return tunnel$1;
 	hasRequiredTunnel$1 = 1;
-	var tls = require$$2;
+	var tls = require$$1;
 	var http$1 = http;
 	var https$1 = https;
 	var events = events$1;
@@ -1246,7 +1246,7 @@ function requireUtil$7 () {
 
 	const assert = require$$0$1;
 	const { kDestroyed, kBodyUsed, kListeners, kBody } = requireSymbols$4();
-	const { IncomingMessage } = require$$2$1;
+	const { IncomingMessage } = require$$2;
 	const stream = require$$0$2;
 	const net = require$$0$3;
 	const { Blob } = require$$0;
@@ -4818,7 +4818,7 @@ function requireWebidl () {
 	hasRequiredWebidl = 1;
 
 	const { types, inspect } = require$$0$4;
-	const { markAsUncloneable } = require$$1;
+	const { markAsUncloneable } = require$$1$1;
 	const { toUSVString } = requireUtil$7();
 
 	/** @type {import('../../../types/webidl').Webidl} */
@@ -5521,7 +5521,7 @@ function requireUtil$6 () {
 	hasRequiredUtil$6 = 1;
 
 	const { Transform } = require$$0$2;
-	const zlib = require$$1$1;
+	const zlib = require$$1$2;
 	const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = requireConstants$2();
 	const { getGlobalOrigin } = requireGlobal$1();
 	const { collectASequenceOfCodePoints, collectAnHTTPQuotedString, removeChars, parseMIMEType } = requireDataUrl();
@@ -10970,7 +10970,7 @@ function requireClient$1 () {
 
 	const assert = require$$0$1;
 	const net = require$$0$3;
-	const http = require$$2$1;
+	const http = require$$2;
 	const util = requireUtil$7();
 	const { channels } = requireDiagnostics();
 	const Request = requireRequest$1();
@@ -12436,7 +12436,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kDispatch, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$1$2;
+	const { URL } = require$$1$3;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -14903,7 +14903,7 @@ function requireMockUtils () {
 	  kGetNetConnect
 	} = requireMockSymbols();
 	const { buildURL } = requireUtil$7();
-	const { STATUS_CODES } = require$$2$1;
+	const { STATUS_CODES } = require$$2;
 	const {
 	  types: {
 	    isPromise
@@ -15657,7 +15657,7 @@ function requirePendingInterceptorsFormatter () {
 	hasRequiredPendingInterceptorsFormatter = 1;
 
 	const { Transform } = require$$0$2;
-	const { Console } = require$$1$3;
+	const { Console } = require$$1$4;
 
 	const PERSISTENT = process.versions.icu ? '✅' : 'Y ';
 	const NOT_PERSISTENT = process.versions.icu ? '❌' : 'N ';
@@ -16157,7 +16157,7 @@ function requireDns () {
 	if (hasRequiredDns) return dns;
 	hasRequiredDns = 1;
 	const { isIP } = require$$0$3;
-	const { lookup } = require$$1$4;
+	const { lookup } = require$$1$5;
 	const DecoratorHandler = requireDecoratorHandler();
 	const { InvalidArgumentError, InformationalError } = requireErrors();
 	const maxInt = Math.pow(2, 31) - 1;
@@ -18959,7 +18959,7 @@ function requireFetch () {
 	} = requireResponse();
 	const { HeadersList } = requireHeaders();
 	const { Request, cloneRequest } = requireRequest();
-	const zlib = require$$1$1;
+	const zlib = require$$1$2;
 	const {
 	  bytesMatch,
 	  makePolicyContainer,
@@ -19011,7 +19011,7 @@ function requireFetch () {
 	const { dataURLProcessor, serializeAMimeType, minimizeSupportedMimeType } = requireDataUrl();
 	const { getGlobalDispatcher } = requireGlobal();
 	const { webidl } = requireWebidl();
-	const { STATUS_CODES } = require$$2$1;
+	const { STATUS_CODES } = require$$2;
 	const GET_OR_HEAD = ['GET', 'HEAD'];
 
 	const defaultUserAgent = typeof __UNDICI_IS_NODE__ !== 'undefined' || typeof esbuildDetection !== 'undefined'
@@ -24230,7 +24230,7 @@ function requireEvents () {
 	const { webidl } = requireWebidl();
 	const { kEnumerableProperty } = requireUtil$7();
 	const { kConstruct } = requireSymbols$4();
-	const { MessagePort } = require$$1;
+	const { MessagePort } = require$$1$1;
 
 	/**
 	 * @see https://html.spec.whatwg.org/multipage/comms.html#messageevent
@@ -25468,7 +25468,7 @@ function requirePermessageDeflate () {
 	if (hasRequiredPermessageDeflate) return permessageDeflate;
 	hasRequiredPermessageDeflate = 1;
 
-	const { createInflateRaw, Z_DEFAULT_WINDOWBITS } = require$$1$1;
+	const { createInflateRaw, Z_DEFAULT_WINDOWBITS } = require$$1$2;
 	const { isValidClientWindowBits } = requireUtil$1();
 	const { MessageSizeExceededError } = requireErrors();
 
@@ -28222,6 +28222,7 @@ function requireFtpContext () {
 	Object.defineProperty(FtpContext, "__esModule", { value: true });
 	FtpContext.FTPContext = FtpContext.FTPError = void 0;
 	const net_1 = require$$0$6;
+	const tls_1 = require$$1;
 	const parseControlResponse_1 = requireParseControlResponse();
 	/**
 	 * Describes an FTP server error response including the FTP response code.
@@ -28237,6 +28238,8 @@ function requireFtpContext () {
 	function doNothing() {
 	    /** Do nothing */
 	}
+	// Limit the accepted size of the control response.
+	const maxControlResponseLength = 2 ** 16;
 	/**
 	 * FTPContext holds the control and data sockets of an FTP connection and provides a
 	 * simplified way to interact with an FTP server, handle responses, errors and timeouts.
@@ -28259,6 +28262,8 @@ function requireFtpContext () {
 	        this.ipFamily = undefined;
 	        /** Options for TLS connections. */
 	        this.tlsOptions = {};
+	        /** Most recent TLS session from the control connection, used to resume the session on data connections. */
+	        this.tlsSessionStore = undefined;
 	        /** A multiline response might be received as multiple chunks. */
 	        this._partialResponse = "";
 	        this._encoding = encoding;
@@ -28324,6 +28329,7 @@ function requireFtpContext () {
 	        this.dataSocket = undefined;
 	        // This being a reset, reset any other state apart from the socket.
 	        this.tlsOptions = {};
+	        this.tlsSessionStore = undefined;
 	        this._partialResponse = "";
 	        if (this._socket) {
 	            const newSocketUpgradesExisting = socket.localPort === this._socket.localPort;
@@ -28351,6 +28357,9 @@ function requireFtpContext () {
 	            socket.on("close", hadError => { if (!hadError)
 	                this.closeWithError(new Error("Server closed connection unexpectedly.")); });
 	            this._setupDefaultErrorHandlers(socket, "control socket");
+	            if (socket instanceof tls_1.TLSSocket) {
+	                socket.on("session", session => { this.tlsSessionStore = session; });
+	            }
 	        }
 	        this._socket = socket;
 	    }
@@ -28495,7 +28504,11 @@ function requireFtpContext () {
 	     */
 	    _onControlSocketData(chunk) {
 	        this.log(`< ${chunk}`);
-	        // This chunk might complete an earlier partial response.
+	        // This chunk might complete an earlier partial response. Protect against unbounded response attack.
+	        if (this._partialResponse.length + chunk.length > maxControlResponseLength) {
+	            this.closeWithError(new Error("FTP control response exceeded maximum allowed size"));
+	            return;
+	        }
 	        const completeResponse = this._partialResponse + chunk;
 	        const parsed = (0, parseControlResponse_1.parseControlResponse)(completeResponse);
 	        // Remember any incomplete remainder.
@@ -28601,8 +28614,9 @@ function requireNetUtils () {
 	netUtils.describeTLS = describeTLS;
 	netUtils.describeAddress = describeAddress;
 	netUtils.upgradeSocket = upgradeSocket;
+	netUtils.isLoopback = isLoopback;
 	netUtils.ipIsPrivateV4Address = ipIsPrivateV4Address;
-	const tls_1 = require$$2;
+	const tls_1 = require$$1;
 	/**
 	 * Returns a string describing the encryption on a given socket instance.
 	 */
@@ -28644,6 +28658,12 @@ function requireNetUtils () {
 	            reject(error);
 	        });
 	    });
+	}
+	/**
+	 * Returns true if an IP address is a loopback address.
+	 */
+	function isLoopback(ip) {
+	    return ip === "::1" || ip.startsWith("127.");
 	}
 	/**
 	 * Returns true if an IP is a private address according to https://tools.ietf.org/html/rfc1918#section-3.
@@ -29410,9 +29430,9 @@ function requireTransfer () {
 	transfer.connectForPassiveTransfer = connectForPassiveTransfer;
 	transfer.uploadFrom = uploadFrom;
 	transfer.downloadTo = downloadTo;
-	const netUtils_1 = requireNetUtils();
 	const stream_1 = require$$0$7;
-	const tls_1 = require$$2;
+	const tls_1 = require$$1;
+	const netUtils_1 = requireNetUtils();
 	const parseControlResponse_1 = requireParseControlResponse();
 	/**
 	 * Prepare a data socket using passive mode over IPv6.
@@ -29467,9 +29487,11 @@ function requireTransfer () {
 	    return res;
 	}
 	/**
-	 * Prepare a data socket using passive mode over IPv4. Ignore the IP provided by the PASV response,
-	 * and use the control host IP. This is the same behaviour as with the more modern variant EPSV. Use
-	 * this to fix issues around NAT or provide more security by preventing FTP bounce attacks.
+	 * Prepare a data socket using passive mode over IPv4.
+	 *
+	 * Will throw an error if the IP provided by the PASV response doesn't match the one of the control connection.
+	 * The error will contain detailed information. This is done to provide more security by preventing FTP bounce
+	 * attacks.
 	 */
 	async function enterPassiveModeIPv4_forceControlHostIP(ftp) {
 	    const res = await ftp.request("PASV");
@@ -29481,7 +29503,15 @@ function requireTransfer () {
 	    if (controlHost === undefined) {
 	        throw new Error("Control socket is disconnected, can't get remote address.");
 	    }
-	    await connectForPassiveTransfer(controlHost, target.port, ftp);
+	    // Strip IPv4-mapped IPv6 prefix (e.g. "::ffff:1.2.3.4" → "1.2.3.4") so the
+	    // comparison works regardless of whether the OS uses a dual-stack socket.
+	    const normalizedControlHost = controlHost.replace(/^::ffff:/i, "");
+	    const hostsAreCompatible = normalizedControlHost === target.host
+	        || ((0, netUtils_1.isLoopback)(normalizedControlHost) && (0, netUtils_1.isLoopback)(target.host));
+	    if (!hostsAreCompatible) {
+	        throw new Error(`PASV returned another host (${target.host}) for data transfer that you have connected to (${controlHost}). Even though the FTP protocol allows this, basic-ftp disables this feature by default for security reasons. If you do need this feature, instantiate the Client with the optional paramter "allowSeparateTransferHost: true". See the README documentation for more information.`);
+	    }
+	    await connectForPassiveTransfer(normalizedControlHost, target.port, ftp);
 	    return res;
 	}
 	/**
@@ -29513,6 +29543,7 @@ function requireTransfer () {
 	        socket.on("error", handleConnErr);
 	        socket.on("timeout", handleTimeout);
 	        socket.connect({ port, host, family: ftp.ipFamily }, () => {
+	            var _a;
 	            if (ftp.socket instanceof tls_1.TLSSocket) {
 	                socket = (0, tls_1.connect)(Object.assign({}, ftp.tlsOptions, {
 	                    socket,
@@ -29521,8 +29552,12 @@ function requireTransfer () {
 	                    // security: If a completely new session would be negotiated, a hacker
 	                    // could guess the port and connect to the new data connection before we do
 	                    // by just starting his/her own TLS session.
-	                    session: ftp.socket.getSession()
+	                    session: (_a = ftp.tlsSessionStore) !== null && _a !== void 0 ? _a : ftp.socket.getSession()
 	                }));
+	                // When the server issues a new session ticket after this data connection's
+	                // TLS handshake (TLS 1.3 single-use tickets), capture it so the next data
+	                // connection can present a fresh ticket and resume successfully.
+	                socket.on("session", session => { ftp.tlsSessionStore = session; });
 	                // It's the responsibility of the transfer task to wait until the
 	                // TLS socket issued the event 'secureConnect'. We can't do this
 	                // here because some servers will start upgrading after the
@@ -29730,7 +29765,7 @@ function requireClient () {
 	Client.Client = void 0;
 	const fs_1 = fs__default;
 	const path_1 = path__default;
-	const tls_1 = require$$2;
+	const tls_1 = require$$1;
 	const util_1 = require$$6;
 	const FtpContext_1 = requireFtpContext();
 	const netUtils_1 = requireNetUtils();
@@ -29748,7 +29783,8 @@ function requireClient () {
 	const fsClose = (0, util_1.promisify)(fs_1.close);
 	const fsUnlink = (0, util_1.promisify)(fs_1.unlink);
 	const defaultClientOptions = {
-	    allowSeparateTransferHost: true,
+	    /** For security reasons this library should not allow separate transfer hosts by default. */
+	    allowSeparateTransferHost: false,
 	    maxListingBytes: 40 * 1024 * 1024
 	};
 	const LIST_COMMANDS_DEFAULT = () => ["LIST -a", "LIST"];
