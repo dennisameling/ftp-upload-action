@@ -12,8 +12,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       basic-ftp:
-        specifier: github:patrickjuchli/basic-ftp#3be2fc79691d029257bd177f274fe1bcb9f8a783
-        version: https://codeload.github.com/patrickjuchli/basic-ftp/tar.gz/3be2fc79691d029257bd177f274fe1bcb9f8a783
+        specifier: ^6.0.1
+        version: 6.0.1
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.5
@@ -999,9 +999,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  basic-ftp@https://codeload.github.com/patrickjuchli/basic-ftp/tar.gz/3be2fc79691d029257bd177f274fe1bcb9f8a783:
-    resolution: {tarball: https://codeload.github.com/patrickjuchli/basic-ftp/tar.gz/3be2fc79691d029257bd177f274fe1bcb9f8a783}
-    version: 6.0.0
+  basic-ftp@6.0.1:
+    resolution: {integrity: sha512-3ilxa3n4276wGQp/ImRAuz4ALdsj/2Wd3FqoZBZlajDYnByCZ0JMb4+26Rde0wGXIbM0G2HWSfr/Fi8b21KX8g==}
     engines: {node: '>=10.0.0'}
 
   brace-expansion@1.1.14:
@@ -3631,7 +3630,7 @@ snapshots:
 
   baseline-browser-mapping@2.10.20: {}
 
-  basic-ftp@https://codeload.github.com/patrickjuchli/basic-ftp/tar.gz/3be2fc79691d029257bd177f274fe1bcb9f8a783: {}
+  basic-ftp@6.0.1: {}
 
   brace-expansion@1.1.14:
     dependencies:

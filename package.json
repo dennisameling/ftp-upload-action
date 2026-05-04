@@ -29,7 +29,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@actions/core": "^3.0.0",
-		"basic-ftp": "github:patrickjuchli/basic-ftp#3be2fc79691d029257bd177f274fe1bcb9f8a783"
+		"basic-ftp": "^6.0.1"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
