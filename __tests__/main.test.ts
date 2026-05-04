@@ -7,7 +7,6 @@ test('returns folder contents', async () => {
   for await (const fileObject of getFiles(
     path.join(__dirname, '..', 'dummydata', 'testFolder'),
     path.resolve(__dirname, '..', 'dummydata', 'testFolder')
-    // eslint-disable-next-line no-undef
   ) as AsyncIterable<File>) {
     expect(fileArray).toContain(fileObject.filename)
   }
@@ -24,7 +23,6 @@ test('returns folder contents recursively', async () => {
   for await (const fileObject of getFiles(
     path.join(__dirname, '..', 'dummydata', 'testFolderRecursive'),
     path.resolve(__dirname, '..', 'dummydata', 'testFolderRecursive')
-    // eslint-disable-next-line no-undef
   ) as AsyncIterable<File>) {
     expect(fileArray).toContain(`${fileObject.folder}/${fileObject.filename}`)
   }
