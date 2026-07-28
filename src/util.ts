@@ -1,5 +1,5 @@
-import {relative, resolve} from 'path'
-import {readdirSync} from 'fs'
+import {readdirSync} from 'node:fs'
+import {relative, resolve} from 'node:path'
 
 export interface File {
   folder: string
@@ -19,7 +19,7 @@ export async function* getFiles(
   dir: string,
   absRoot: string,
   dirLevel = 0
-): File | AsyncIterable<File> {
+): AsyncGenerator<File> {
   const dirents = readdirSync(dir, {withFileTypes: true})
   for (const dirent of dirents) {
     const res = resolve(dir, dirent.name)

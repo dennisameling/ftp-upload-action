@@ -1,6 +1,6 @@
 import {expect, test} from 'bun:test'
-import * as path from 'path'
-import {File, getFiles} from '../src/util'
+import * as path from 'node:path'
+import {type File, getFiles} from '../src/util'
 
 const rootDir = path.join(import.meta.dirname, '..')
 

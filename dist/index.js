@@ -18690,6 +18690,9 @@ var require_dist = __commonJS((exports) => {
   } });
 });
 
+// src/main.ts
+import * as path from "node:path";
+
 // node_modules/@actions/core/lib/command.js
 import * as os from "os";
 
@@ -19292,11 +19295,10 @@ function info(message) {
 
 // src/main.ts
 var ftp = __toESM(require_dist(), 1);
-import * as path from "path";
 
 // src/util.ts
-import { relative, resolve } from "path";
-import { readdirSync } from "fs";
+import { readdirSync } from "node:fs";
+import { relative, resolve } from "node:path";
 async function* getFiles(dir, absRoot, dirLevel = 0) {
   const dirents = readdirSync(dir, { withFileTypes: true });
   for (const dirent of dirents) {
@@ -19402,5 +19404,5 @@ async function retryRequest(callback, isFinalAttempt = false) {
 }
 run();
 
-//# debugId=539D2D857805143C64756E2164756E21
+//# debugId=85F13881EE319DE064756E2164756E21
 //# sourceMappingURL=index.js.map
