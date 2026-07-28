@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "types": ["node", "bun"]
-  },
-  "include": ["src", "__tests__"],
-  "exclude": ["node_modules", "dist"]
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"types": ["node", "bun"]
+	},
+	"include": ["src", "__tests__"],
+	"exclude": ["node_modules", "dist"]
 }

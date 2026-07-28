@@ -1,7 +1,7 @@
+import * as path from 'node:path'
 import * as core from '@actions/core'
 import * as ftp from 'basic-ftp'
-import * as path from 'path'
-import {File, getFiles} from './util'
+import {type File, getFiles} from './util'
 
 async function run(): Promise<void> {
   const server: string = core.getInput('server', {required: true})
@@ -105,7 +105,7 @@ async function retryRequest<T>(
 ): Promise<T> {
   try {
     return await callback()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: errors thrown by basic-ftp are untyped
   } catch (e: any) {
     if (e.code >= 400 && e.code <= 499) {
       core.info(

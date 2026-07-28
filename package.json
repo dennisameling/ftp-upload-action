@@ -9,12 +9,11 @@
 	},
 	"scripts": {
 		"build": "tsc --noEmit",
-		"format": "prettier --write '**/*.ts'",
-		"format-check": "prettier --check '**/*.ts'",
-		"lint": "eslint .",
+		"check": "biome check --write",
+		"check-ci": "biome check",
 		"package": "rm -rf ./dist && bun build ./src/main.ts --outdir=./dist --entry-naming='[dir]/index.[ext]' --target=node --format=esm --sourcemap=linked",
 		"test": "bun test",
-		"all": "bun run build && bun run format && bun run lint && bun run package && bun test"
+		"all": "bun run build && bun run check && bun run package && bun test"
 	},
 	"repository": {
 		"type": "git",
@@ -29,22 +28,13 @@
 	"license": "MIT",
 	"dependencies": {
 		"@actions/core": "^3.0.1",
-		"basic-ftp": "^6.0.1"
+		"basic-ftp": "^6.0.2"
 	},
 	"devDependencies": {
-		"@eslint/eslintrc": "^3.3.5",
-		"@eslint/js": "^10.0.1",
+		"@biomejs/biome": "^2.5.6",
 		"@types/bun": "^1.3.14",
-		"@types/node": "^25.6.0",
-		"@typescript-eslint/eslint-plugin": "^8.59.1",
-		"@typescript-eslint/parser": "^8.59.1",
-		"eslint": "^10.3.0",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-prettier": "^5.5.5",
-		"globals": "^17.6.0",
-		"js-yaml": "^4.1.1",
-		"prettier": "^3.8.3",
-		"typescript": "^6.0.3"
+		"@types/node": "^26.1.2",
+		"typescript": "^7.0.2"
 	},
 	"engines": {
 		"node": ">=24.0.0"
