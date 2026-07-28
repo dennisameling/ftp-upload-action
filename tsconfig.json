@@ -3,13 +3,12 @@
     "target": "es2022",
     "module": "preserve",
     "moduleResolution": "bundler",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "noEmit": true,
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "types": ["node", "jest"]
+    "types": ["node", "bun"]
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "rollup.config.ts", "**/*.test.ts"]
+  "include": ["src", "__tests__"],
+  "exclude": ["node_modules", "dist"]
 }
