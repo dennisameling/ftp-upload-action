@@ -1,0 +1,19 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended", "schedule:weekly"],
+	"rangeStrategy": "bump",
+	"reviewers": ["dennisameling"],
+	"packageRules": [
+		{
+			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+			"groupName": "all non-major dependencies"
+		},
+		{
+			"description": "Only bump dependencies if those versions have been live for 7+ days",
+			"matchDatasources": ["npm", "docker"],
+			"minimumReleaseAge": "7 days",
+			"prCreation": "not-pending",
+			"internalChecksFilter": "strict"
+		}
+	]
+}
